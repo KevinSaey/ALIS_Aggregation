@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// Rotates and translates a pattern
+/// </summary>
 public class Block
 
 {
@@ -19,183 +22,103 @@ public class Block
         ZeroIndex = zeroIndex;
 
         _rotation = newRotation;
-        Debug.Log(_rotation);
-        BlockVoxels = GetVoxels().ToList();
-        /* X = new Vector3Int(1, 0, 0);
-         Y = new Vector3Int(0, 1, 0);
-         Z = new Vector3Int(0, 0, 1);
 
-         MinX = new Vector3Int(-1, 0, 0);
-         MinY = new Vector3Int(0, -1, 0);
-         MinZ = new Vector3Int(-1, 0, -1);*/
+        BlockVoxels = GetVoxels().ToList();
+        BlockVoxels.ForEach(f => f.Index += zeroIndex);//translation
+        RotateConnections();
     }
 
     IEnumerable<Voxel> GetVoxels()
     {
         foreach (var voxel in Pattern.Voxels)
         {
-            
+            var copyVox = voxel.ShallowClone();
+            copyVox.Index = RotateVector(copyVox.Index);
 
-            yield return RotateVoxel(voxel);
+            yield return copyVox;
         }
     }
 
-    Voxel RotateVoxel(Voxel vox)
+    Vector3Int RotateVector(Vector3Int vec)
     {
-        var copyVox = vox.ShallowClone();
-
-        int x, y, z;
-        x = copyVox.Index.x;
-        y = copyVox.Index.y;
-        z = copyVox.Index.z;
-
-        switch (_rotation.x)
+        // x rotation
+        Vector3Int[] rotation_x = new Vector3Int[]
         {
-            case 0:
-                break;
-            case 90:
-                copyVox.Index = new Vector3Int(x, z, -y);
-                break;
-            case 180:
-                copyVox.Index = new Vector3Int(x, -y, -z);
-                break;
-            case 270:
-            case -90:
-                copyVox.Index = new Vector3Int(x, -z, y);
-                break;
-            default:
-                Debug.Log("X Angle should be either 90,180,270 or -90 degrees");
-                break;
-        }
-        x = copyVox.Index.x;
-        y = copyVox.Index.y;
-        z = copyVox.Index.z;
+            vec,
+            new Vector3Int(vec.x, vec.z, -vec.y),
+            new Vector3Int(vec.x, -vec.y, -vec.z),
+            new Vector3Int(vec.x, -vec.z, vec.y)
+        };
 
-        switch (_rotation.y)
+        vec = rotation_x[_rotation.x / 90 % 4];
+
+        // y rotation
+        Vector3Int[] rotation_y = new Vector3Int[]
         {
-            case 0:
+            vec,
+            new Vector3Int(-vec.z, vec.y, vec.x),
+            new Vector3Int(-vec.x, vec.y, -vec.z),
+            new Vector3Int(vec.z, vec.y, -vec.x)
+        };
 
-                break;
-            case 90:
-                copyVox.Index = new Vector3Int(-z, y, x);
-                break;
-            case 180:
-                copyVox.Index = new Vector3Int(-x, y, -z);
-                break;
-            case 270:
-            case -90:
-                copyVox.Index = new Vector3Int(z, y, -x);
-                break;
-            default:
-                Debug.Log("Y angle should be either 90,180,270 or -90 degrees");
-                break;
-        }
-        x = copyVox.Index.x;
-        y = copyVox.Index.y;
-        z = copyVox.Index.z;
+        vec = rotation_y[_rotation.y / 90 % 4];
 
-        switch (_rotation.z)
+        // z rotation
+        Vector3Int[] rotation_z = new Vector3Int[]
         {
-            case 0:
+            vec,
+            new Vector3Int(-vec.y, vec.x, vec.z),
+            new Vector3Int(-vec.x, -vec.y, vec.z),
+            new Vector3Int(vec.y, -vec.x, vec.z)
+        };
 
-                break;
-            case 90:
-                copyVox.Index = new Vector3Int(-y, x, z);
-                break;
-            case 180:
-                copyVox.Index = new Vector3Int(-x, -y, z);
-                break;
-            case 270:
-            case -90:
-                copyVox.Index = new Vector3Int(y, -x, z);
-                break;
-            default:
-                Debug.Log("Z-Angle should be either 90,180,270 or -90 degrees");
-                break;
+        vec = rotation_z[_rotation.z / 90 % 4];
 
+        return vec;
+    }
 
+    void RotateConnections()
+    {
+        BlockVoxels.ForEach(f => f.Orientation += _rotation);
+    }
+
+    void SetConnectionVectors()
+    {
+        foreach (Voxel vox in BlockVoxels.Where(s => s.Type == VoxelType.Connection))
+        {
+            Voxel neighbour = null;
+            int cnt = 0;
+            while ((neighbour == null || neighbour.Type != VoxelType.Block) && cnt < 6)
+            {
+                neighbour = GetVoxelAt(Util.GetNeighbourIndex(vox.Index)[cnt]);
+                cnt++;
+            }
+
+            if (neighbour == null)
+            {
+                Debug.Log("Something went wrong, No neighbourgh found!");
+                return;
+            }
+            else if (neighbour.Type != VoxelType.Block)
+            {
+                Debug.Log("Something went wrong, No neighbourh found with type Block!");
+                return;
+            }
+
+            vox.Orientation = vox.Index - neighbour.Index;
+            //Debug.Log(vox.Orientation);
         }
+    }
 
-        return copyVox;
+    Voxel GetVoxelAt(Vector3Int index)
+    {
+        return BlockVoxels.FirstOrDefault(s => s.Index == index);
     }
 
 
     //Vector3.SignedAngle(a, b, Vector3.up);
 
 
-    /*public GameObject GoBlock;
-    GameObject _block = new GameObject("Block");
-    Vector3 _position;
-    Vector3 _orientation;
-    public List<Vector3> Points;
-    public List<Vector3> Connections;
-    int _xblock;
-    int _yblock;
-    int _zblock;
-    float _voxelSize;
 
-    public Block()
-    {
-    }
-
-    public Block(Vector3 pos, Vector3 or, GameObject goBlock, int xblock, int yblock, int zblock, float voxelSize)
-
-    {
-        _position = pos;
-        _orientation = or;
-        GoBlock = goBlock;
-        _xblock = xblock;
-        _yblock = yblock;
-        _zblock = zblock;
-        _voxelSize = voxelSize;
-
-
-        GeneratePoints();
-        GenerateShape();
-        _block.transform.rotation = Quaternion.Euler(or);
-        //_block.transform.position = pos;
-    }
-
-
-    void GeneratePoints()
-    {
-        // Generate the points within the block
-        Points = new List<Vector3>();
-        for (int z = 0; z < _zblock; z++)
-        {
-            for (int y = 0; y < _yblock; y++)
-            {
-                for (int x = 0; x < _xblock; x++)
-                {
-                    Points.Add(new Vector3(x * _voxelSize, y * _voxelSize, z * _voxelSize) + 
-                        new Vector3(_position.x-_voxelSize*_xblock/2+_voxelSize/2, _position.y, _position.z ));
-
-                }
-            }
-        }
-    }
-
-    void GetPointFromIndex(int x, int y, int z)
-    {
-
-    }
-
-    void GenerateShape()
-    {
-        
-        foreach (var point in Points)
-        {
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.localScale = new Vector3(_voxelSize, _voxelSize, _voxelSize);
-            cube.transform.position = point;
-            cube.transform.SetParent(_block.transform);
-        }
-    }
-
-    void GenerateConnections()
-    {
-        // Generate the possible connection points
-    }
-    */
 
 }

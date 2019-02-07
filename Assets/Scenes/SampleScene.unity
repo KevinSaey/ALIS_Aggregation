@@ -373,6 +373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _goVoxel: {fileID: 8418647820368845950, guid: 3f6fbb40cfc6f9543a7ba2aa944f0c28,
     type: 3}
+  _minimalConnections: 3
 --- !u!4 &928847647
 Transform:
   m_ObjectHideFlags: 0

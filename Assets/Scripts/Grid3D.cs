@@ -1,41 +1,71 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class Grid3D : MonoBehaviour
+public class Grid3D
 {
     public Voxel[,,] Voxels { get; private set; }
-    public Vector3Int Size;
+    Vector3Int _size;
 
     // Start is called before the first frame update
-    void Start()
+    public Grid3D(int sizeX, int sizeY, int sizeZ)
     {
-        Size = new Vector3Int(20, 20, 20);
+        _size = new Vector3Int(sizeX, sizeY, sizeZ);
 
         // make voxels
-        Voxels = new Voxel[Size.x, Size.y, Size.z];
+        Voxels = new Voxel[_size.x, _size.y, _size.z];
 
-        for (int z = 0; z < Size.z; z++)
-            for (int y = 0; y < Size.y; y++)
-                for (int x = 0; x < Size.x; x++)
-                {
+        for (int z = 0; z < _size.z; z++)
+            for (int y = 0; y < _size.y; y++)
+                for (int x = 0; x < _size.x; x++)
                     Voxels[x, y, z] = new Voxel(x, y, z, VoxelType.Empty);
-                }
 
     }
 
-    List<Voxel> GetNeighbourghs(Voxel baseVoxel)
-    {
-        List<Voxel> neighbourghs = new List<Voxel>();
-
-
-
-        return neighbourghs;
-    }
-
-    // Update is called once per frame
-    void Update()
+    public void GenerateNextBlock()
     {
 
     }
+
+    public void AddToGrid(Block block)
+    {
+        foreach (var vox in block.BlockVoxels)
+        {
+            if (!(vox.Index.x < 0 || vox.Index.y < 0 || vox.Index.z < 0 ||
+                vox.Index.x >= _size.x || vox.Index.y >= _size.y || vox.Index.z >= _size.z)
+                && GetVoxelAt(vox.Index).Type == VoxelType.Empty)
+            {
+                AddVoxel(vox);
+            }
+        }
+    }
+
+    public bool CanBlockExist(Block block)
+    {
+        foreach (var vox in block.BlockVoxels.Where(s => s.Type == VoxelType.Block))
+        {
+            if (vox.Index.x < 0 || vox.Index.y < 0 || vox.Index.z < 0 ||
+                vox.Index.x >= _size.x || vox.Index.y >= _size.y || vox.Index.z >= _size.z)
+                return false;
+
+            if (GetVoxelAt(vox.Index).Type == VoxelType.Block)
+                return false;
+        }
+
+        return true;
+    }
+
+    private Voxel GetVoxelAt(Vector3Int index)
+    {
+        return Voxels[index.x, index.y, index.z];
+    }
+
+    private void AddVoxel(Voxel vox)
+    {
+        Debug.Log(vox.Index);
+        Voxels[vox.Index.x, vox.Index.y, vox.Index.z] = vox;
+    }
+
+
 }
