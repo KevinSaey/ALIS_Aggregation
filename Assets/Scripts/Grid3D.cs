@@ -7,8 +7,6 @@ public class Grid3D
 {
     public Voxel[,,] Voxels { get; private set; }
     Vector3Int _size;
-    public List<Block> blocks = new List<Block>();           // The algorithm will try to approach this point
-    IGenerationAlgorithm gen = new GenerationAlgorithm(new Vector3Int(15,15,15), 3);
 
     // Start is called before the first frame update
     public Grid3D(int sizeX, int sizeY, int sizeZ)
@@ -27,14 +25,11 @@ public class Grid3D
 
     public void GenerateNextBlock()
     {
-        Block newbl = gen.GetNextBlock(this);
-        if (newbl != null)
-            AddToGrid(newbl);
+
     }
 
     public void AddToGrid(Block block)
     {
-        blocks.Add(block);
         foreach (var vox in block.BlockVoxels)
         {
             if (!(vox.Index.x < 0 || vox.Index.y < 0 || vox.Index.z < 0 ||

@@ -28,10 +28,6 @@ public class Block
         RotateConnections();
     }
 
-    public Block(Pattern pattern, Voxel connpoint): this(pattern, connpoint.Index, connpoint.Orientation) {
-
-    }
-
     IEnumerable<Voxel> GetVoxels()
     {
         foreach (var voxel in Pattern.Voxels)
