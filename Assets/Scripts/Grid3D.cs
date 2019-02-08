@@ -8,7 +8,7 @@ public class Grid3D
     public Voxel[,,] Voxels { get; private set; }
     Vector3Int _size;
     public List<Block> blocks = new List<Block>();           // The algorithm will try to approach this point
-    IGenerationAlgorithm gen = new GenerationAlgorithm(new Vector3Int(15,15,15), 3);
+    IGenerationAlgorithm gen = new GenerationAlgorithm(Controller.GoTarget.transform.position.ToVector3Int(), 3);
 
     // Start is called before the first frame update
     public Grid3D(int sizeX, int sizeY, int sizeZ)
@@ -25,16 +25,18 @@ public class Grid3D
 
     }
 
-    public void GenerateNextBlock()
+    public Block GenerateNextBlock()
     {
-        Block newbl = gen.GetNextBlock(this);
-        if (newbl != null)
-            AddToGrid(newbl);
+        Block newBlock = gen.GetNextBlock(this);
+        if (newBlock != null)
+            AddToGrid(newBlock);
+        return newBlock;
     }
 
     public void AddToGrid(Block block)
     {
         blocks.Add(block);
+        block.DrawBlock(this);
         foreach (var vox in block.BlockVoxels)
         {
             if (!(vox.Index.x < 0 || vox.Index.y < 0 || vox.Index.z < 0 ||
@@ -61,7 +63,7 @@ public class Grid3D
         return true;
     }
 
-    private Voxel GetVoxelAt(Vector3Int index)
+    public Voxel GetVoxelAt(Vector3Int index)
     {
         return Voxels[index.x, index.y, index.z];
     }

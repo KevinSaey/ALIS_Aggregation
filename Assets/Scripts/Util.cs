@@ -8,7 +8,7 @@ using UnityEngine;
 public static class Util
 {
     public static Vector3Int[] NeighbourIndex = new Vector3Int[6] { new Vector3Int(1, 0, 0), new Vector3Int(-1, 0, 0), new Vector3Int(0, 1, 0), new Vector3Int(0, -1, 0), new Vector3Int(0, 0, 1), new Vector3Int(0, 0, -1) };
-    public static Vector3Int ToInt(this Vector3 v)
+    public static Vector3Int ToVector3Int(this Vector3 v)
     {
         int x = Mathf.RoundToInt(v.x);
         int y = Mathf.RoundToInt(v.y);

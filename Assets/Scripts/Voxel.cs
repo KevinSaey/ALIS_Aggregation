@@ -10,8 +10,9 @@ public class Voxel
     public VoxelType Type;
     public Vector3Int Orientation;
     public Pattern ParentPattern { get; private set; }
-    public Block ParentBlock { get; private set; }
+    public Block ParentBlock { get; set; }
     public string Name;
+    public GameObject Go;
     Vector3Int[] _neighbours = new Vector3Int[6]; //X+,X-,Y+,Y-,Z+,Z-
 
         
@@ -47,6 +48,8 @@ public class Voxel
         Name = $"x {x}, y {y}, z {z}";
     }
 
+    
+
 
     /// <summary>
     /// Turn the voxel on or off
@@ -78,8 +81,11 @@ public class Voxel
         return clone;
     }
 
-    
-
+    public void DestroyGoVoxel()
+    {
+        Debug.Log("lalalalalala");
+        GameObject.Destroy(Go);
+    }
 }
 
 

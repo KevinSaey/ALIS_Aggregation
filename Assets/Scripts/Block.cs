@@ -12,6 +12,7 @@ public class Block
     public Pattern Pattern;
     public Vector3Int ZeroIndex;
     public List<Voxel> BlockVoxels;
+    public GameObject goBlockParent;
     //public Vector3Int X, Y, Z, MinX, MinY, MinZ;
 
     Vector3Int _rotation;
@@ -21,14 +22,17 @@ public class Block
         Pattern = pattern;
         ZeroIndex = zeroIndex;
 
+       
+
         _rotation = newRotation;
 
         BlockVoxels = GetVoxels().ToList();
-        BlockVoxels.ForEach(f => f.Index += zeroIndex);//translation
+        BlockVoxels.ForEach(f => f.Index += zeroIndex);
+        BlockVoxels.ForEach(f => f.ParentBlock=this);//translation
         RotateConnections();
     }
 
-    public Block(Pattern pattern, Voxel connpoint): this(pattern, connpoint.Index, connpoint.Orientation) {
+    public Block(Pattern pattern, Voxel connPoint): this(pattern, connPoint.Index, connPoint.Orientation) {
 
     }
 
@@ -119,8 +123,33 @@ public class Block
         return BlockVoxels.FirstOrDefault(s => s.Index == index);
     }
 
+    public void InstantiateBlock()
+    {
+        goBlockParent = new GameObject($"Block {ZeroIndex}");
+        goBlockParent.transform.position = ZeroIndex;
+    }
 
-    //Vector3.SignedAngle(a, b, Vector3.up);
+    public void DrawBlock(Grid3D grid)
+    {
+        InstantiateBlock();
+        foreach (var voxel in BlockVoxels)
+        {
+            
+            if ((voxel.Type == VoxelType.Block || voxel.Type == VoxelType.Connection) && grid.GetVoxelAt(voxel.Index).Type != VoxelType.Block) 
+            {
+                grid.GetVoxelAt(voxel.Index).DestroyGoVoxel();
+                var vox = GameObject.Instantiate(Controller.GoVoxel, voxel.Index, Quaternion.identity, voxel.ParentBlock.goBlockParent.transform);
+                vox.name = voxel.Name;
+                voxel.Go = vox;
+
+                if (voxel.Type == VoxelType.Connection)
+                {
+                    var rend = vox.GetComponent<Renderer>();
+                    rend.material = Controller.MatConnection;
+                }
+            }
+        }
+    }
 
 
 

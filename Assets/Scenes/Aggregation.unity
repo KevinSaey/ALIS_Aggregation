@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.99121004, g: 0.99121004, b: 0.99121004, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -192,8 +192,6 @@ GameObject:
   - component: {fileID: 534669905}
   - component: {fileID: 534669904}
   - component: {fileID: 534669903}
-  - component: {fileID: 534669907}
-  - component: {fileID: 534669906}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -265,83 +263,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 30, y: 45, z: 0}
---- !u!114 &534669906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534669902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  volumeTrigger: {fileID: 534669905}
-  volumeLayer:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  stopNaNPropagation: 1
-  finalBlitToCameraTarget: 1
-  antialiasingMode: 0
-  temporalAntialiasing:
-    jitterSpread: 0.75
-    sharpness: 0.25
-    stationaryBlending: 0.95
-    motionBlending: 0.85
-  subpixelMorphologicalAntialiasing:
-    quality: 2
-  fastApproximateAntialiasing:
-    fastMode: 0
-    keepAlpha: 0
-  fog:
-    enabled: 1
-    excludeSkybox: 1
-  debugLayer:
-    lightMeter:
-      width: 512
-      height: 256
-      showCurves: 1
-    histogram:
-      width: 512
-      height: 256
-      channel: 3
-    waveform:
-      exposure: 0.12
-      height: 256
-    vectorscope:
-      size: 256
-      exposure: 0.12
-    overlaySettings:
-      linearDepth: 0
-      motionColorIntensity: 4
-      motionGridSize: 64
-      colorBlindnessType: 0
-      colorBlindnessStrength: 1
-  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
-  breakBeforeColorGrading: 0
-  m_BeforeTransparentBundles: []
-  m_BeforeStackBundles: []
-  m_AfterStackBundles: []
---- !u!114 &534669907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 534669902}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: df6778bc1003b52428e70cc1b52365f0, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 1
-  priority: 0
 --- !u!1 &928847645
 GameObject:
   m_ObjectHideFlags: 0
@@ -353,7 +274,7 @@ GameObject:
   - component: {fileID: 928847647}
   - component: {fileID: 928847646}
   m_Layer: 0
-  m_Name: Test
+  m_Name: Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,12 +289,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 928847645}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc925b2517b519a42b6e9fe69dac2112, type: 3}
+  m_Script: {fileID: 11500000, guid: 69b2364deb618df4e8fcdfec2c5900d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goVoxel: {fileID: 8418647820368845950, guid: 3f6fbb40cfc6f9543a7ba2aa944f0c28,
+  _goVoxel: {fileID: 8418647820368845950, guid: a9a1263746c505f42b69aca6014dfe43,
     type: 3}
   _minimalConnections: 3
+  _goTarget: {fileID: 1858348715}
+  _matBlock: {fileID: 2100000, guid: 6c7d30222bd8a7c43bf27dd54fc4f824, type: 2}
+  _matConnection: {fileID: 2100000, guid: ffdec7a1124a7c743aa18dba71329563, type: 2}
 --- !u!4 &928847647
 Transform:
   m_ObjectHideFlags: 0
@@ -480,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: df6778bc1003b52428e70cc1b52365f0, type: 2}
+  sharedProfile: {fileID: 0}
   isGlobal: 1
   blendDistance: 0
   weight: 1
@@ -644,17 +568,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1486136185}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69609ac5dcb3aab4b8869bb1c10772b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b9dba0c639b4bd4cbfd27eea144b3e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goVoxel: {fileID: 8418647820368845950, guid: 3f6fbb40cfc6f9543a7ba2aa944f0c28,
+  _goVoxel: {fileID: 8418647820368845950, guid: a9a1263746c505f42b69aca6014dfe43,
     type: 3}
-  _boxX: 3
-  _boxY: 6
-  _boxZ: 1
-  _xAmount: 100
-  _yAmount: 100
-  _zAmount: 100
+  _boxX: 0
+  _boxY: 0
+  _boxZ: 0
+  _xAmount: 0
+  _yAmount: 0
+  _zAmount: 0
 --- !u!4 &1486136187
 Transform:
   m_ObjectHideFlags: 0
@@ -698,7 +622,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1666c22a8378aca47ac21bff4efdb40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableCapture: 0
 --- !u!4 &1742805107
 Transform:
   m_ObjectHideFlags: 0
@@ -712,6 +635,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1858348715
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1858348716}
+  m_Layer: 0
+  m_Name: Target
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1858348716
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858348715}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 18.16, y: 15, z: -11.46}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2126547929
 GameObject:
