@@ -22,21 +22,17 @@ public class TestScript : MonoBehaviour
         var pattern = new Pattern(Vector3Int.up);
         test = new Block(pattern, new Vector3Int(15, 1, 15), new Vector3Int(0, 90, 0));
         grid.AddToGrid(test);
-        grid.GenerateNextBlock();
 
         // Temporary
-        foreach (var voxel in grid.Voxels)
+        foreach (var voxel in test.BlockVoxels/*.Where(s=>s.Type==VoxelType.Block)*/)
         {
-            if (voxel.Type == VoxelType.Block)
-            {
-                var vox = GameObject.Instantiate(_goVoxel, voxel.Index, Quaternion.identity);
-                vox.name = voxel.Name;
+            var vox = GameObject.Instantiate(_goVoxel, voxel.Index, Quaternion.identity);
+            vox.name = voxel.Name;
 
-                if (voxel.Type == VoxelType.Connection)
-                {
-                    var rend = vox.GetComponent<Renderer>();
-                    rend.material = _connection;
-                }
+            if (voxel.Type == VoxelType.Connection)
+            {
+                var rend = vox.GetComponent<Renderer>();
+                rend.material = _connection;
             }
         }
 

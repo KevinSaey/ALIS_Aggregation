@@ -39,7 +39,7 @@ public class Grid3D
         {
             if (!(vox.Index.x < 0 || vox.Index.y < 0 || vox.Index.z < 0 ||
                 vox.Index.x >= _size.x || vox.Index.y >= _size.y || vox.Index.z >= _size.z)
-                && GetVoxelAt(vox.Index).Type != VoxelType.Block)
+                && GetVoxelAt(vox.Index).Type == VoxelType.Empty)
             {
                 AddVoxel(vox);
             }
