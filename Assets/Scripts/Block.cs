@@ -9,6 +9,7 @@ using System.Linq;
 public class Block
 
 {
+    Grid3D _grid;
     public Pattern Pattern;
     public Vector3Int ZeroIndex;
     public List<Voxel> BlockVoxels;
@@ -17,22 +18,23 @@ public class Block
 
     Vector3Int _rotation;
 
-    public Block(Pattern pattern, Vector3Int zeroIndex, Vector3Int newRotation)
+    public Block(Pattern pattern, Vector3Int zeroIndex, Vector3Int newRotation, Grid3D grid)
     {
+
         Pattern = pattern;
         ZeroIndex = zeroIndex;
-
-       
+        _grid = grid;
 
         _rotation = newRotation;
 
         BlockVoxels = GetVoxels().ToList();
         BlockVoxels.ForEach(f => f.Index += zeroIndex);
-        BlockVoxels.ForEach(f => f.ParentBlock=this);//translation
+        BlockVoxels.ForEach(f => f.ParentBlock = this);//translation
         RotateConnections();
     }
 
-    public Block(Pattern pattern, Voxel connPoint): this(pattern, connPoint.Index, connPoint.Orientation) {
+    public Block(Pattern pattern, Voxel connPoint, Grid3D grid) : this(pattern, connPoint.Index, connPoint.Orientation, grid)
+    {
 
     }
 
@@ -90,40 +92,8 @@ public class Block
         BlockVoxels.ForEach(f => f.Orientation += _rotation);
     }
 
-    void SetConnectionVectors()
-    {
-        foreach (Voxel vox in BlockVoxels.Where(s => s.Type == VoxelType.Connection))
-        {
-            Voxel neighbour = null;
-            int cnt = 0;
-            while ((neighbour == null || neighbour.Type != VoxelType.Block) && cnt < 6)
-            {
-                neighbour = GetVoxelAt(Util.GetNeighbourIndex(vox.Index)[cnt]);
-                cnt++;
-            }
 
-            if (neighbour == null)
-            {
-                Debug.Log("Something went wrong, No neighbourgh found!");
-                return;
-            }
-            else if (neighbour.Type != VoxelType.Block)
-            {
-                Debug.Log("Something went wrong, No neighbourh found with type Block!");
-                return;
-            }
-
-            vox.Orientation = vox.Index - neighbour.Index;
-            //Debug.Log(vox.Orientation);
-        }
-    }
-
-    Voxel GetVoxelAt(Vector3Int index)
-    {
-        return BlockVoxels.FirstOrDefault(s => s.Index == index);
-    }
-
-    public void InstantiateBlock()
+    public void InstantiateGoBlock()
     {
         goBlockParent = new GameObject($"Block {ZeroIndex}");
         goBlockParent.transform.position = ZeroIndex;
@@ -131,21 +101,31 @@ public class Block
 
     public void DrawBlock(Grid3D grid)
     {
-        InstantiateBlock();
-        foreach (var voxel in BlockVoxels)
+        InstantiateGoBlock();
+        foreach (var vox in BlockVoxels)
         {
-            
-            if ((voxel.Type == VoxelType.Block || voxel.Type == VoxelType.Connection) && grid.GetVoxelAt(voxel.Index).Type != VoxelType.Block) 
+            if (!(vox.Index.x < 0 || vox.Index.y < 0 || vox.Index.z < 0 ||
+                vox.Index.x >= Controller.Size.x || vox.Index.y >= Controller.Size.y || vox.Index.z >= Controller.Size.z))
             {
-                grid.GetVoxelAt(voxel.Index).DestroyGoVoxel();
-                var vox = GameObject.Instantiate(Controller.GoVoxel, voxel.Index, Quaternion.identity, voxel.ParentBlock.goBlockParent.transform);
-                vox.name = voxel.Name;
-                voxel.Go = vox;
-
-                if (voxel.Type == VoxelType.Connection)
+                var gridVox = grid.GetVoxelAt(vox.Index);
+                if ((vox.Type == VoxelType.Block || vox.Type == VoxelType.Connection) && gridVox.Type != VoxelType.Block)
                 {
-                    var rend = vox.GetComponent<Renderer>();
-                    rend.material = Controller.MatConnection;
+                    if (gridVox.Go == null)
+                    {
+                        gridVox.Go = GameObject.Instantiate(Controller.GoVoxel, vox.Index, Quaternion.identity, vox.ParentBlock.goBlockParent.transform);
+                        gridVox.Go.name = vox.Name;
+                    }
+
+                    if (vox.Type == VoxelType.Connection)
+                    {
+                        var rend = gridVox.Go.GetComponent<Renderer>();
+                        rend.material = Controller.MatConnection;
+                    }
+                    else if (vox.Type == VoxelType.Block)
+                    {
+                        var rend = gridVox.Go.GetComponent<Renderer>();
+                        rend.material = Controller.MatBlock;
+                    }
                 }
             }
         }

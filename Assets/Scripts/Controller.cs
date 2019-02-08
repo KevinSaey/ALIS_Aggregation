@@ -19,6 +19,14 @@ public class Controller : MonoBehaviour
     Material _matBlock, _matConnection;
     public static Material MatBlock, MatConnection;
 
+    [SerializeField]
+    Vector3Int _size;
+    public static Vector3Int Size;
+
+    [SerializeField]
+    int _voxelSize, _minCon;
+    public static int VoxelSize, MinCon;
+
     Block test;
     Grid3D _grid;
 
@@ -29,36 +37,39 @@ public class Controller : MonoBehaviour
         MatBlock = _matBlock;
         MatConnection = _matConnection;
         GoTarget = _goTarget;
+        Size = _size;
+        VoxelSize = _voxelSize;
+        MinCon = _minCon;
 
-        _grid = new Grid3D(30, 50, 30);
+        _grid = new Grid3D(Size);
         var pattern = new PatternA();
-        test = new Block(pattern, new Vector3Int(15, 1, 15), new Vector3Int(0, 0, 0));
-        _grid.AddToGrid(test);
+        test = new Block(pattern, new Vector3Int(15, 1, 15), new Vector3Int(0, 0, 0), _grid);
+        _grid.AddBlockToGrid(test);
 
         // Temporary
 
-
+        StartCoroutine(NextBlockOverTime());
 
 
     }
 
-    public void DrawGrid()
-    {
-
-    }
-
+    
     public void Update()
     {
-        StartCoroutine(NextBlockOverTime());
+        
     }
 
     IEnumerator NextBlockOverTime()
     {
-        yield return new WaitForSeconds(1f);
-        var block = _grid.GenerateNextBlock();
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+
+            var block = _grid.GenerateNextBlock();
 
 
-        Debug.Log("NextBlock");
+            Debug.Log("NextBlock");
+        }
     }
 
 }

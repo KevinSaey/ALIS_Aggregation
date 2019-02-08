@@ -6,15 +6,13 @@ using System.Linq;
 public abstract class Pattern
 {
     public List<Voxel> Voxels { get; private set; }
-    //public Voxel BaseVoxel { get; private set; }
-    public Vector3Int PatternNormal { get; private set; }
+    public Vector3Int PatternOrientation { get; private set; }
 
     public Pattern()
     {
         Voxels = new List<Voxel>();
-        PatternNormal = Vector3Int.up;
+        PatternOrientation = Vector3Int.zero;
 
-        PatternNormal = Vector3Int.up;// temporary hard coded
         InitialisePattern();
     }
 
@@ -27,7 +25,7 @@ public abstract class Pattern
         for (int y = 0; y < 6; y++)
             for (int x = -1; x <= 1; x++)
             {
-                Voxels.Add(new Voxel(x, y, 0, VoxelType.Block, PatternNormal, this));
+                Voxels.Add(new Voxel(x, y, 0, VoxelType.Block, PatternOrientation, this));
             }
 
         var conVox = new List<Voxel>();

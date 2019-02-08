@@ -60,17 +60,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Agregation.cs" />
     <Compile Include="Assets\Scripts\Block.cs" />
-    <Compile Include="Assets\Scripts\captureCamera.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
+    <Compile Include="Assets\Scripts\Depricated\Agregation.cs" />
+    <Compile Include="Assets\Scripts\Depricated\VoxelPropeties.cs" />
     <Compile Include="Assets\Scripts\GenerationAlgorithm.cs" />
     <Compile Include="Assets\Scripts\Grid3D.cs" />
     <Compile Include="Assets\Scripts\IGenerationAlgorithm.cs" />
-    <Compile Include="Assets\Scripts\Pattern.cs" />
-    <Compile Include="Assets\Scripts\Util.cs" />
-    <Compile Include="Assets\Scripts\Voxel.cs" />
-    <Compile Include="Assets\Scripts\VoxelPropeties.cs" />
+    <Compile Include="Assets\Scripts\Util\captureCamera.cs" />
+    <Compile Include="Assets\Scripts\Util\Util.cs" />
+    <Compile Include="Assets\Scripts\Voxel\Face.cs" />
+    <Compile Include="Assets\Scripts\Voxel\Pattern.cs" />
+    <Compile Include="Assets\Scripts\Voxel\Voxel.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/Unity/ALIS_Aggregation/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

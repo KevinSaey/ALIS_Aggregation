@@ -19,7 +19,7 @@ public class GenerationAlgorithm : IGenerationAlgorithm
     {
         // The connection points, sorted by distance.
         IEnumerable<Voxel> byDistance = SortByDistance(GetConnectionPoints(grid));
-        IEnumerable<Block> blocksFromDistance = byDistance.SelectMany(v => new Block[] { new Block(new PatternA(), v), new Block(new PatternB(), v) });
+        IEnumerable<Block> blocksFromDistance = byDistance.SelectMany(v => new Block[] { new Block(new PatternA(), v,grid), new Block(new PatternB(), v,grid) });
 
 
         return blocksFromDistance.FirstOrDefault(bl => Validate(bl, grid));
