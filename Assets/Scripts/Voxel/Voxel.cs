@@ -5,16 +5,19 @@ using UnityEngine;
 public enum VoxelType { Empty, Connection, Block };
 public class Voxel
 {
-    public bool IsActive { get; private set; } = false;
+    public bool IsActive
+    {
+        get { return Type == VoxelType.Block; }
+    }
     public Vector3Int Index;
     public VoxelType Type;
     public Vector3Int Orientation;
     public Pattern ParentPattern { get; private set; }
     public Block ParentBlock { get; private set; }
     public string Name;
-    Vector3Int[] _neighbours = new Vector3Int[6]; //X+,X-,Y+,Y-,Z+,Z-
+    public List<Face> Faces = new List<Face>(6);
 
-        
+
 
     /// <summary>
     /// Instantiate a voxel. When instantiated, a voxel is turned of
@@ -47,38 +50,17 @@ public class Voxel
         Name = $"x {x}, y {y}, z {z}";
     }
 
-
-    /// <summary>
-    /// Turn the voxel on or off
-    /// </summary>
-    /// <returns>the changed state of the voxel</returns>
-    public bool SwitchActive(bool isActive)
-    {
-        IsActive = isActive;
-        if (isActive)
-        {
-            Type = VoxelType.Block;
-        }
-        else
-        {
-            Type = VoxelType.Empty;
-        }
-        return IsActive;
-    }
-
     public Voxel ShallowClone()
     {
         return MemberwiseClone() as Voxel;
     }
 
-    public Voxel DeepClone() {
-        Voxel clone = ShallowClone();
-        clone._neighbours = new Vector3Int[6];
-        _neighbours.CopyTo(clone._neighbours,0);
-        return clone;
+    public void AddFace(Face f)
+    {
+        Faces.Add(f);
     }
 
-    
+
 
 }
 

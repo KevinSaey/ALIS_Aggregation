@@ -33,7 +33,6 @@ public class Pattern
         var conVox = new List<Voxel>();
         foreach (var voxel in Voxels.Where(s => s.Type == VoxelType.Block && s.Index.y != 2 && s.Index.y != 3))
         {
-
             conVox.Add(new Voxel(voxel.Index.x, voxel.Index.y, voxel.Index.z + 1, VoxelType.Connection, new Vector3Int(90, 0, 0), this));
             conVox.Add(new Voxel(voxel.Index.x, voxel.Index.y, voxel.Index.z - 1, VoxelType.Connection, new Vector3Int(270, 0, 0), this));
         }
@@ -43,11 +42,18 @@ public class Pattern
         Voxels.Add(new Voxel(0, 6, 0, VoxelType.Connection, Vector3Int.zero, this));
         Voxels.Add(new Voxel(1, 6, 0, VoxelType.Connection, Vector3Int.zero, this));
 
-        Voxels.Add(new Voxel(-1, -1, 0, VoxelType.Connection, new Vector3Int(0,0,180), this));
+        Voxels.Add(new Voxel(-1, -1, 0, VoxelType.Connection, new Vector3Int(0, 0, 180), this));
         Voxels.Add(new Voxel(0, -1, 0, VoxelType.Connection, new Vector3Int(0, 0, 180), this));
         Voxels.Add(new Voxel(1, -1, 0, VoxelType.Connection, new Vector3Int(0, 0, 180), this));
-        
 
+        for (int i = 0; i < 6; i++)
+        {
+            if (i != 2 && i != 3)
+            {
+                Voxels.Add(new Voxel(-2, i, 0, VoxelType.Connection, new Vector3Int(0, 0, 90), this));
+                Voxels.Add(new Voxel(2, i, 0, VoxelType.Connection, new Vector3Int(0, 0, 270), this));
+            }
+        }
     }
 }
 
