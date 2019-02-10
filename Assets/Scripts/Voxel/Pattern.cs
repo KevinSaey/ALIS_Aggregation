@@ -21,11 +21,12 @@ public abstract class Pattern
         //Create basevoxel
         //Voxels.Add(new Voxel(0, 0, 0, VoxelType.Block, PatternNormal, this));
 
-        // temporary hard coded block
+        // temporary hard coded pattern
+        List<Vector3Int> walkableFaces = new List<Vector3Int> { new Vector3Int(0, 0, 1), new Vector3Int(0, 0, -1) };
         for (int y = 0; y < 6; y++)
             for (int x = -1; x <= 1; x++)
             {
-                Voxels.Add(new Voxel(x, y, 0, VoxelType.Block, PatternOrientation, this));
+                Voxels.Add(new Voxel(x, y, 0, VoxelType.Block, PatternOrientation, this, walkableFaces));
             }
 
         var conVox = new List<Voxel>();

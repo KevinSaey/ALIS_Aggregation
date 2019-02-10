@@ -12,10 +12,12 @@ public class Voxel
     public Block ParentBlock { get; set; }
     public string Name;
     public GameObject Go;
-        
+    public List<Vector3Int> WalkableFaces = new List<Vector3Int>();
+    public List<Face> Faces = new List<Face>(6);
+
 
     /// <summary>
-    /// Instantiate a voxel. When instantiated, a voxel is turned of
+    /// Instantiate a voxel.
     /// </summary>
     /// <param name="x">X index of the voxel</param>
     /// <param name="y">Y index of the voxel</param>
@@ -34,8 +36,8 @@ public class Voxel
     /// <param name="y">Y index of the voxel</param>
     /// <param name="z">Z index of the voxel</param>
     /// <param name="type">The type of the voxel (Empty, Connection, Block) </param>
-    /// <param name="normal">Direction normal in the direction from the Parrent Pattern to the connection voxel eg. (1,0,0)</param>
     /// <param name="parentPattern">Parrent Pattern of the connection</param>
+    /// <param name="orientation">Orientation of the block or connection</param>
     public Voxel(int x, int y, int z, VoxelType type, Vector3Int orientation, Pattern parentPattern)
     {
         Index = new Vector3Int(x, y, z);
@@ -45,14 +47,34 @@ public class Voxel
         Name = $"x {x}, y {y}, z {z}";
     }
 
+    /// <summary>
+    /// Instantiate a block voxel with walkable faces assigned
+    /// </summary>
+    /// <param name="x">X index of the voxel</param>
+    /// <param name="y">Y index of the voxel</param>
+    /// <param name="z">Z index of the voxel</param>
+    /// <param name="type">The type of the voxel (Empty, Connection, Block) </param>
+    /// <param name="parentPattern">Parrent Pattern of the connection</param>
+    /// <param name="orientation">Orientation of the block</param>
+    /// <param name="walkableFaces">The direction vectors between the center of the block and the climable faces eg. (1,0,0)</param>
+    public Voxel(int x, int y, int z, VoxelType type, Vector3Int orientation, Pattern parentPattern, List<Vector3Int> walkableFaces)
+        : this(x, y, z, type, orientation, parentPattern)
+    {
+        WalkableFaces = walkableFaces;
+
+    }
 
     public void Copy(Voxel orig)
     {
         this.Type = orig.Type;
         this.Orientation = orig.Orientation;
-        this.ParentBlock = orig.ParentBlock;
+        if (this.Type != VoxelType.Block)
+        {
+            this.ParentBlock = orig.ParentBlock;
+        }
         this.ParentPattern = orig.ParentPattern;
         this.Name = orig.Name;
+        this.WalkableFaces = orig.WalkableFaces;
     }
 
     public Voxel ShallowClone()

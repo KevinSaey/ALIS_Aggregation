@@ -6,16 +6,57 @@ using System.Linq;
 
 public class Face
 {
+    public enum BoundaryType { Inside = 0, Left = -1, Right = 1, Outside = 2 }
+
     bool _climable;
     public bool Climable
     {
         get
         {
-            return (_climable || _normal == Vector3Int.up) && _normal != Vector3Int.down && ParentVox.Count(s => s != null) == 1;
+            return (_climable || Normal == Vector3Int.up) && Normal != Vector3Int.down && HasOneBlockParent();
         }
     }
 
-    Vector3Int _normal;
+    public BoundaryType Boundary
+    {
+        get
+        {
+            bool left = ParentVox[0]?.Type == VoxelType.Block;
+            bool right = ParentVox[1]?.Type == VoxelType.Block;
+
+            if (!left && right) return BoundaryType.Left;
+            if (left && !right) return BoundaryType.Right;
+            if (left && right) return BoundaryType.Inside;
+            return BoundaryType.Outside;
+        }
+    }
+
+    public Vector3 Normal
+    {
+        get
+        {
+            int f = (int)Boundary;
+            if (Boundary == BoundaryType.Outside) f = 0;
+
+            if (Index.y == 0 && Direction == Axis.Y)
+            {
+                f = Boundary == BoundaryType.Outside ? 1 : 0;
+            }
+
+            switch (Direction)
+            {
+                case Axis.X:
+                    return Vector3.right * f;
+                case Axis.Y:
+                    return Vector3.up * f;
+                case Axis.Z:
+                    return Vector3.forward * f;
+                default:
+                    throw new Exception("Wrong direction.");
+            }
+        }
+    }
+
     Axis Direction;
     public Voxel[] ParentVox;
     public Vector3Int Index;
@@ -29,11 +70,12 @@ public class Face
         Direction = direction;
         ParentVox = GetVoxels();
 
-        /*foreach (var v in ParentVox.Where(v => v != null))
-            v.Faces.Add(this);*/
+        foreach (var v in ParentVox.Where(v => v != null))
+            v.Faces.Add(this);
 
         Center = GetCenter();
     }
+   
 
     Voxel[] GetVoxels()
     {
@@ -83,5 +125,10 @@ public class Face
             default:
                 throw new Exception("Wrong direction, Bitch!");
         }
+    }
+
+    public bool HasOneBlockParent()
+    {
+        return ParentVox.Count(s => s.Type == VoxelType.Block) == 1;
     }
 }

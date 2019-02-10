@@ -14,6 +14,7 @@ public class Block
     public Vector3Int ZeroIndex;
     public List<Voxel> BlockVoxels;
     public GameObject goBlockParent;
+
     //public Vector3Int X, Y, Z, MinX, MinY, MinZ;
 
     Vector3Int _rotation;
@@ -44,7 +45,7 @@ public class Block
         {
             var copyVox = voxel.ShallowClone();
             copyVox.Index = RotateVector(copyVox.Index);
-
+            copyVox.WalkableFaces?.ForEach(s => RotateVector(s));
             yield return copyVox;
         }
     }
@@ -118,12 +119,16 @@ public class Block
 
                     if (vox.Type == VoxelType.Connection)
                     {
-                        var rend = gridVox.Go.GetComponent<Renderer>();
+                        GameObject go = gridVox.Go;
+                        var rend = go.GetComponent<Renderer>();
+                        go.transform.SetParent(vox.ParentBlock.goBlockParent.transform);
                         rend.material = Controller.MatConnection;
                     }
                     else if (vox.Type == VoxelType.Block)
                     {
-                        var rend = gridVox.Go.GetComponent<Renderer>();
+                        GameObject go = gridVox.Go;
+                        var rend = go.GetComponent<Renderer>();
+                        go.transform.SetParent(vox.ParentBlock.goBlockParent.transform);
                         rend.material = Controller.MatBlock;
                     }
                 }

@@ -298,7 +298,7 @@ MonoBehaviour:
   _goTarget: {fileID: 1858348715}
   _matBlock: {fileID: 2100000, guid: 6c7d30222bd8a7c43bf27dd54fc4f824, type: 2}
   _matConnection: {fileID: 2100000, guid: ffdec7a1124a7c743aa18dba71329563, type: 2}
-  _size: {x: 100, y: 100, z: 100}
+  _size: {x: 20, y: 20, z: 20}
   _voxelSize: 1
   _minCon: 3
 --- !u!4 &928847647
@@ -651,7 +651,7 @@ GameObject:
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1

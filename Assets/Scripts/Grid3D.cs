@@ -27,7 +27,6 @@ public class Grid3D
                     Voxels[x, y, z] = new Voxel(x, y, z, VoxelType.Empty);
 
         MakeFaces();
-
     }
 
     public void MakeFaces()
@@ -83,6 +82,10 @@ public class Grid3D
                 AddVoxel(vox);
             }
         }
+
+
+        Debug.Log( $"{GetClimableFaces().Count()} Climable faces");
+
     }
 
     public bool CanBlockExist(Block block)
@@ -100,6 +103,29 @@ public class Grid3D
         return true;
     }
 
+    public IEnumerable<Face> GetClimableFaces()
+    {
+        for (int n = 0; n < 3; n++)
+        {
+            int xSize = Faces[n].GetLength(0);
+            int ySize = Faces[n].GetLength(1);
+            int zSize = Faces[n].GetLength(2);
+
+            for (int z = 0; z < zSize; z++)
+                for (int y = 0; y < ySize; y++)
+                    for (int x = 0; x < xSize; x++)
+                    {
+                        if (Faces[n][x, y, z].Climable)
+                        {
+                            yield return Faces[n][x, y, z];
+                        }
+                    }
+        }
+    }
+
+    
+
+
     public Voxel GetVoxelAt(Vector3Int index)
     {
         return Voxels[index.x, index.y, index.z];
@@ -107,8 +133,6 @@ public class Grid3D
 
     private void AddVoxel(Voxel vox)
     {
-        Debug.Log(vox.Index);
-
         Voxels[vox.Index.x, vox.Index.y, vox.Index.z].Copy(vox);
     }
 
