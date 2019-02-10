@@ -31,7 +31,7 @@ public class Face
         }
     }
 
-    public Vector3 Normal
+    public Vector3Int Normal
     {
         get
         {
@@ -46,11 +46,11 @@ public class Face
             switch (Direction)
             {
                 case Axis.X:
-                    return Vector3.right * f;
+                    return Vector3Int.right * f;
                 case Axis.Y:
-                    return Vector3.up * f;
+                    return Vector3Int.up * f;
                 case Axis.Z:
-                    return Vector3.forward * f;
+                    return new Vector3Int(0,0,1) * f;
                 default:
                     throw new Exception("Wrong direction.");
             }
@@ -75,7 +75,6 @@ public class Face
 
         Center = GetCenter();
     }
-   
 
     Voxel[] GetVoxels()
     {
@@ -129,6 +128,6 @@ public class Face
 
     public bool HasOneBlockParent()
     {
-        return ParentVox.Count(s => s.Type == VoxelType.Block) == 1;
+        return ParentVox.Count(s => s?.Type == VoxelType.Block) == 1;
     }
 }

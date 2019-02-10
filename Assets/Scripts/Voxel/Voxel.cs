@@ -15,7 +15,6 @@ public class Voxel
     public List<Vector3Int> WalkableFaces = new List<Vector3Int>();
     public List<Face> Faces = new List<Face>(6);
 
-
     /// <summary>
     /// Instantiate a voxel.
     /// </summary>
@@ -61,7 +60,6 @@ public class Voxel
         : this(x, y, z, type, orientation, parentPattern)
     {
         WalkableFaces = walkableFaces;
-
     }
 
     public void Copy(Voxel orig)
@@ -88,12 +86,3 @@ public class Voxel
         GameObject.Destroy(Go);
     }
 }
-
-
-
-
-
-
-
-
-
