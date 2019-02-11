@@ -6,12 +6,12 @@ using System.Linq;
 public class GenerationAlgorithm : IGenerationAlgorithm
 {
     Vector3Int _target;
-    int _minConnpoints;
 
-    public GenerationAlgorithm(Vector3Int target, int minConnpoints)
+
+    public GenerationAlgorithm(Vector3Int target)
     {
-        this._minConnpoints = minConnpoints;
-        this._target = target;
+
+        _target = target;
     }
 
 
@@ -19,7 +19,7 @@ public class GenerationAlgorithm : IGenerationAlgorithm
     {
         // The connection points, sorted by distance.
         IEnumerable<Voxel> byDistance = SortByDistance(GetConnectionPoints(grid));
-        IEnumerable<Block> blocksFromDistance = byDistance.SelectMany(v => new Block[] { new Block(new PatternA(), v,grid), new Block(new PatternB(), v,grid) });
+        IEnumerable<Block> blocksFromDistance = byDistance.SelectMany(v => new Block[] { new Block(new PatternA(), v, grid), new Block(new PatternB(), v, grid) });
 
 
         return blocksFromDistance.FirstOrDefault(bl => Validate(bl, grid));
@@ -57,6 +57,6 @@ public class GenerationAlgorithm : IGenerationAlgorithm
         IEnumerable<Vector3Int> connPoints = GetConnectionPoints(grid).Select(pt => pt.Index);
         IEnumerable<Vector3Int> blocks = block.BlockVoxels.Where(vx => vx.Type == VoxelType.Block).Select(pt => pt.Index);
 
-        return connPoints.Intersect(blocks).Count() >= _minConnpoints;
+        return connPoints.Intersect(blocks).Count() >= Controller.MinCon;
     }
 }

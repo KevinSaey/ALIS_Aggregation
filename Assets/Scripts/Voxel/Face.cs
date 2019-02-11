@@ -8,12 +8,11 @@ public class Face
 {
     public enum BoundaryType { Inside = 0, Left = -1, Right = 1, Outside = 2 }
 
-    bool _climable;
     public bool Climable
     {
         get
         {
-            return (_climable || Normal == Vector3Int.up) && Normal != Vector3Int.down && HasOneBlockParent();
+            return Normal != Vector3Int.down && HasOneBlockParent() && (WalkablePattern() || Normal == Vector3Int.up);
         }
     }
 
@@ -50,7 +49,7 @@ public class Face
                 case Axis.Y:
                     return Vector3Int.up * f;
                 case Axis.Z:
-                    return new Vector3Int(0,0,1) * f;
+                    return new Vector3Int(0, 0, 1) * f;
                 default:
                     throw new Exception("Wrong direction.");
             }
@@ -124,6 +123,11 @@ public class Face
             default:
                 throw new Exception("Wrong direction, Bitch!");
         }
+    }
+
+    public bool WalkablePattern()
+    {
+        return ParentVox.First(f => f.Type == VoxelType.Block).WalkableFaces.Count(s => s == Normal)==1;
     }
 
     public bool HasOneBlockParent()

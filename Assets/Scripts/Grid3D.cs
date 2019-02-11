@@ -15,7 +15,7 @@ public class Grid3D
     // Start is called before the first frame update
     public Grid3D(Vector3Int size)
     {
-        gen = new GenerationAlgorithm(Controller.GoTarget.transform.position.ToVector3Int(), Controller.MinCon);
+        gen = new GenerationAlgorithm(Controller.GoTarget.transform.position.ToVector3Int());
         Size = size;
 
         // make voxels

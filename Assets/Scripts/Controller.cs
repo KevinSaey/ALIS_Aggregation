@@ -8,8 +8,6 @@ public class Controller : MonoBehaviour
     [SerializeField]
     GameObject _goVoxel;
     public static GameObject GoVoxel;
-    [SerializeField]
-    int _minimalConnections = 3;
 
     [SerializeField]
     GameObject _goTarget;
@@ -49,14 +47,6 @@ public class Controller : MonoBehaviour
         // Temporary
 
         StartCoroutine(NextBlockOverTime());
-
-
-    }
-
-    
-    public void Update()
-    {
-        
     }
 
     IEnumerator NextBlockOverTime()
