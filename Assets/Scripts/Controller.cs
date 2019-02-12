@@ -28,6 +28,7 @@ public class Controller : MonoBehaviour
     Block test;
     Grid3D _grid;
     PathFinding _pathFinding;
+    bool _showPath;
 
 
     void Start()
@@ -42,29 +43,58 @@ public class Controller : MonoBehaviour
 
         _grid = new Grid3D(Size);
         var pattern = new PatternA();
-        test = new Block(pattern, new Vector3Int(Size.x/2, 1, Size.y/2), new Vector3Int(0, 0, 0), _grid);
+        test = new Block(pattern, new Vector3Int(Size.x / 2, 1, Size.y / 2), new Vector3Int(0, 0, 0), _grid);
         _grid.AddBlockToGrid(test);
 
         _pathFinding = new PathFinding(_grid);
 
 
-        StartCoroutine(NextBlockOverTime());
+        //StartCoroutine(NextBlockOverTime());
+    }
+
+    void OnGUI()
+    {
+        int i = 1;
+        int s = 25;
+
+        if (GUI.Button(new Rect(s, s * i++, 100, 20), "Switch graph"))
+        {
+            _showPath = !_showPath;
+            _grid.SwitchBlockVisibility(!_showPath);
+        }
+        if (GUI.Button(new Rect(s, s * i++, 100, 20), "Generate Next Block"))
+        {
+            NextBlock();
+        }
+
     }
 
     void Update()
     {
-        _pathFinding.Update();
+        if (_showPath)
+        {
+            _pathFinding.DrawMesh();
+        }
     }
+
+    public void NextBlock()
+    {
+        var block = _grid.GenerateNextBlock();
+        _grid.SwitchBlockVisibility(!_showPath);
+        _pathFinding.Regenerate();
+        Debug.Log("NextBlock");
+    }
+
 
     IEnumerator NextBlockOverTime()
     {
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            //yield return new WaitForSeconds(1f);
 
             var block = _grid.GenerateNextBlock();
+            _grid.SwitchBlockVisibility(!_showPath);
             _pathFinding.Regenerate();
-
             Debug.Log("NextBlock");
         }
     }

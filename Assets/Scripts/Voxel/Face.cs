@@ -61,6 +61,7 @@ public class Face
     public Vector3Int Index;
     public Vector3 Center;
     Grid3D _grid;
+    public int DistanceFromZero = 0;
 
     public Face(int x, int y, int z, Axis direction, Grid3D grid)
     {

@@ -9,6 +9,7 @@ public class PathFinding
 {
     Grid3D _grid;
     Mesh _mesh;
+    int _ridiculusHighNumber = 9999;
 
     public PathFinding(Grid3D grid)
     {
@@ -21,9 +22,9 @@ public class PathFinding
         GenerateClimableMeshes(CreateGraph());
     }
 
-    public void Update()
+    public void DrawMesh()
     {
-        if (_grid == null||_mesh == null) return;
+        if (_grid == null || _mesh == null) return;
         Drawing.DrawMesh(false, _mesh);
     }
 
@@ -37,30 +38,35 @@ public class PathFinding
         var graph = graphEdges.ToUndirectedGraph<Face, TaggedEdge<Face, Edge>>();
 
         // start face for shortest path
-        var start = _grid.GetVoxelAt(_grid.blocks[0].ZeroIndex).Faces.First(f=>f!=null&&f.Climable);
+        var start1 = _grid.GetVoxelAt(_grid.Blocks[0].ZeroIndex).Faces.First(f => f != null && f.Climable);
+        //var start2 = _grid.GetVoxelAt(_grid.Blocks[0].ZeroIndex).Faces.Last(f => f != null && f.Climable);
 
         // calculate shortest path from start face to all boundary faces
-        return graph.ShortestPathsDijkstra(e => 1.0, start);
+        return graph.ShortestPathsDijkstra(e => 1.0, start1);
     }
 
-    public void GenerateClimableMeshes(TryFunc<Face,IEnumerable<TaggedEdge<Face,Edge>>> shortest)
+    public void GenerateClimableMeshes(TryFunc<Face, IEnumerable<TaggedEdge<Face, Edge>>> shortest)
     {
         var faceMeshes = new List<CombineInstance>();
 
-        foreach (var face in _grid.GetClimableFaces())
-        {
-            float t = 1;
+        var climableFaces = _grid.GetClimableFaces().Where(f => GetPathCount(shortest, f)>0);
+        //int biggestDistance = climableFaces.First(f => f.DistanceFromZero < _ridiculusHighNumber).DistanceFromZero;
 
-            if (shortest(face, out var path))
-            {
-                t = path.Count() * 0.04f;
-                t = Mathf.Clamp01(t);
-            }
+        foreach (var face in climableFaces)
+        {
+            float t = 0;
+
+
+            t = face.DistanceFromZero * 0.01f;//biggestDistance;
+            t = Mathf.Clamp01(t);
+
 
             Mesh faceMesh;
             faceMesh = Drawing.MakeFace(face.Center, face.Direction, 1, t);
-
-            faceMeshes.Add(new CombineInstance() { mesh = faceMesh });
+            if (face.DistanceFromZero < _ridiculusHighNumber)
+            {
+                faceMeshes.Add(new CombineInstance() { mesh = faceMesh });
+            }
         }
         var mesh = new Mesh()
         {
@@ -70,5 +76,12 @@ public class PathFinding
         mesh.CombineMeshes(faceMeshes.ToArray(), true, false, false);
 
         _mesh = mesh;
+    }
+
+    public int GetPathCount(TryFunc<Face, IEnumerable<TaggedEdge<Face, Edge>>> shortest, Face face)
+    {
+        shortest(face, out var path);
+        face.DistanceFromZero = path == null ? _ridiculusHighNumber : path.Count();
+        return face.DistanceFromZero;
     }
 }

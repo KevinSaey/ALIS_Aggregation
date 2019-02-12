@@ -37,7 +37,7 @@ public class captureCamera : MonoBehaviour {
 
     {
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
 
         string filename = $@"{folder}\image_{Time.frameCount:00000}.png";
 

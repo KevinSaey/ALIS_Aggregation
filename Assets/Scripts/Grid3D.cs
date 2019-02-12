@@ -7,7 +7,7 @@ public class Grid3D
 {
     public Voxel[,,] Voxels { get; private set; }
     public Vector3Int Size;
-    public List<Block> blocks = new List<Block>();           // The algorithm will try to approach this point
+    public List<Block> Blocks = new List<Block>();           // The algorithm will try to approach this point
     IGenerationAlgorithm gen;
 
     public Face[][,,] Faces = new Face[3][,,];
@@ -103,7 +103,7 @@ public class Grid3D
 
     public void AddBlockToGrid(Block block)
     {
-        blocks.Add(block);
+        Blocks.Add(block);
         block.DrawBlock(this);
         foreach (var vox in block.BlockVoxels)
         {
@@ -182,5 +182,8 @@ public class Grid3D
         Voxels[vox.Index.x, vox.Index.y, vox.Index.z].Copy(vox);
     }
 
-
+    public void SwitchBlockVisibility(bool vis)
+    {
+        Blocks.ForEach(b => b.goBlockParent.SetActive(vis));
+    }
 }
