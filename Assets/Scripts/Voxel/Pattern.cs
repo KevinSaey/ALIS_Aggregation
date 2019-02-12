@@ -7,6 +7,7 @@ public abstract class Pattern
 {
     public List<Voxel> Voxels { get; private set; }
     public Vector3Int PatternOrientation { get; private set; }
+    public Vector3Int IndexStartVoxel;
 
     public Pattern()
     {

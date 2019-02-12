@@ -7,7 +7,7 @@ public class captureCamera : MonoBehaviour {
     [SerializeField]
     bool EnableCapture = false;
 
-    string folder = @"D:\Unity\ALIS_Agregation\ScreenCapture";
+    string folder = @"D:\Unity\ALIS_Aggregation\ScreenCapture";
 
 
 
@@ -37,7 +37,7 @@ public class captureCamera : MonoBehaviour {
 
     {
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(1f);
 
         string filename = $@"{folder}\image_{Time.frameCount:00000}.png";
 

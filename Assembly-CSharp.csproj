@@ -67,7 +67,10 @@
     <Compile Include="Assets\Scripts\GenerationAlgorithm.cs" />
     <Compile Include="Assets\Scripts\Grid3D.cs" />
     <Compile Include="Assets\Scripts\IGenerationAlgorithm.cs" />
+    <Compile Include="Assets\Scripts\PathFinding.cs" />
     <Compile Include="Assets\Scripts\Util\captureCamera.cs" />
+    <Compile Include="Assets\Scripts\Util\Drawing.cs" />
+    <Compile Include="Assets\Scripts\Util\MainCamera.cs" />
     <Compile Include="Assets\Scripts\Util\Util.cs" />
     <Compile Include="Assets\Scripts\Voxel\Edge.cs" />
     <Compile Include="Assets\Scripts\Voxel\Face.cs" />
@@ -294,6 +297,36 @@
     </Reference>
     <Reference Include="UnityEngine.SpatialTracking">
       <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnitySpatialTracking/RuntimeEditor/UnityEngine.SpatialTracking.dll</HintPath>
+    </Reference>
+    <Reference Include="BriefFiniteElementNet.Common">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/BriefFiniteElementNet.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="BriefFiniteElementNet">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/BriefFiniteElementNet.dll</HintPath>
+    </Reference>
+    <Reference Include="CSparse">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/CSparse.dll</HintPath>
+    </Reference>
+    <Reference Include="DotParser">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/DotParser.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharpx.Collections">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/FSharpx.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharpx.Collections.Experimental">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/FSharpx.Collections.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneticSharp.Domain">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/GeneticSharp.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneticSharp.Infrastructure.Framework">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/GeneticSharp.Infrastructure.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="YC.QuickGraph">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/YC.QuickGraph.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Analytics.Editor">
       <HintPath>D:/Unity/ALIS_Aggregation/Library/PackageCache/com.unity.analytics@3.2.2/Unity.Analytics.Editor.dll</HintPath>

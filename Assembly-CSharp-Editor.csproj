@@ -316,6 +316,39 @@
     <Reference Include="UnityEditor.WindowsStandalone.Extensions">
       <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
+      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    </Reference>
+    <Reference Include="BriefFiniteElementNet.Common">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/BriefFiniteElementNet.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="BriefFiniteElementNet">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/BriefFiniteElementNet.dll</HintPath>
+    </Reference>
+    <Reference Include="CSparse">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/CSparse.dll</HintPath>
+    </Reference>
+    <Reference Include="DotParser">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/DotParser.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharpx.Collections">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/FSharpx.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharpx.Collections.Experimental">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/FSharpx.Collections.Experimental.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneticSharp.Domain">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/GeneticSharp.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="GeneticSharp.Infrastructure.Framework">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/GeneticSharp.Infrastructure.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="YC.QuickGraph">
+      <HintPath>D:/Unity/ALIS_Aggregation/Assets/Scripts/Plugin/YC.QuickGraph.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>D:/Unity/ALIS_Aggregation/Library/PackageCache/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -330,9 +363,6 @@
     </Reference>
     <Reference Include="UnityEditor.Purchasing">
       <HintPath>D:/Unity/ALIS_Aggregation/Library/PackageCache/com.unity.purchasing@2.0.3/Editor/UnityEditor.Purchasing.dll</HintPath>
-    </Reference>
-    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-      <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

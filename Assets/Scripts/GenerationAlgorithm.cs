@@ -49,6 +49,7 @@ public class GenerationAlgorithm : IGenerationAlgorithm
         bool valid = true;
         valid = valid && grid.CanBlockExist(block);
         valid = valid && CheckMinConnPoints(block, grid);
+        //add more rules
         return valid;
     }
 

@@ -11,6 +11,7 @@ public class Grid3D
     IGenerationAlgorithm gen;
 
     public Face[][,,] Faces = new Face[3][,,];
+    public Edge[][,,] Edges = new Edge[3][,,];
 
     // Start is called before the first frame update
     public Grid3D(Vector3Int size)
@@ -27,6 +28,7 @@ public class Grid3D
                     Voxels[x, y, z] = new Voxel(x, y, z, VoxelType.Empty);
 
         MakeFaces();
+        MakeEdges();
     }
 
     public void MakeFaces()
@@ -60,6 +62,36 @@ public class Grid3D
                 }
     }
 
+    public void MakeEdges()
+    {
+        // make edges
+        Edges[2] = new Edge[Size.x + 1, Size.y + 1, Size.z];
+
+        for (int z = 0; z < Size.z; z++)
+            for (int y = 0; y < Size.y + 1; y++)
+                for (int x = 0; x < Size.x + 1; x++)
+                {
+                    Edges[2][x, y, z] = new Edge(x, y, z, Axis.Z, this);
+                }
+
+        Edges[0] = new Edge[Size.x, Size.y + 1, Size.z + 1];
+
+        for (int z = 0; z < Size.z + 1; z++)
+            for (int y = 0; y < Size.y + 1; y++)
+                for (int x = 0; x < Size.x; x++)
+                {
+                    Edges[0][x, y, z] = new Edge(x, y, z, Axis.X, this);
+                }
+
+        Edges[1] = new Edge[Size.x + 1, Size.y, Size.z + 1];
+
+        for (int z = 0; z < Size.z + 1; z++)
+            for (int y = 0; y < Size.y; y++)
+                for (int x = 0; x < Size.x + 1; x++)
+                {
+                    Edges[1][x, y, z] = new Edge(x, y, z, Axis.Y, this);
+                }
+    }
 
     public Block GenerateNextBlock()
     {
@@ -84,7 +116,7 @@ public class Grid3D
         }
 
 
-        Debug.Log( $"{GetClimableFaces().Count()} Climable faces");
+        Debug.Log($"{GetClimableFaces().Count()} Climable faces");
 
     }
 
@@ -123,8 +155,22 @@ public class Grid3D
         }
     }
 
-    
+    public IEnumerable<Edge> GetEdges()
+    {
+        for (int n = 0; n < 3; n++)
+        {
+            int xSize = Edges[n].GetLength(0);
+            int ySize = Edges[n].GetLength(1);
+            int zSize = Edges[n].GetLength(2);
 
+            for (int z = 0; z < zSize; z++)
+                for (int y = 0; y < ySize; y++)
+                    for (int x = 0; x < xSize; x++)
+                    {
+                        yield return Edges[n][x, y, z];
+                    }
+        }
+    }
 
     public Voxel GetVoxelAt(Vector3Int index)
     {

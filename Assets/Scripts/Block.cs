@@ -120,14 +120,14 @@ public class Block
                     if (vox.Type == VoxelType.Connection)
                     {
                         GameObject go = gridVox.Go;
-                        var rend = go.GetComponent<Renderer>();
+                        var rend = go.GetComponentInChildren<Renderer>();
                         go.transform.SetParent(vox.ParentBlock.goBlockParent.transform);
                         rend.material = Controller.MatConnection;
                     }
                     else if (vox.Type == VoxelType.Block)
                     {
                         GameObject go = gridVox.Go;
-                        var rend = go.GetComponent<Renderer>();
+                        var rend = go.GetComponentInChildren<Renderer>();
                         go.transform.SetParent(vox.ParentBlock.goBlockParent.transform);
                         rend.material = Controller.MatBlock;
                     }

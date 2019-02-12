@@ -27,6 +27,7 @@ public class Controller : MonoBehaviour
 
     Block test;
     Grid3D _grid;
+    PathFinding _pathFinding;
 
 
     void Start()
@@ -41,12 +42,18 @@ public class Controller : MonoBehaviour
 
         _grid = new Grid3D(Size);
         var pattern = new PatternA();
-        test = new Block(pattern, new Vector3Int(15, 1, 15), new Vector3Int(0, 0, 0), _grid);
+        test = new Block(pattern, new Vector3Int(Size.x/2, 1, Size.y/2), new Vector3Int(0, 0, 0), _grid);
         _grid.AddBlockToGrid(test);
 
-        // Temporary
+        _pathFinding = new PathFinding(_grid);
+
 
         StartCoroutine(NextBlockOverTime());
+    }
+
+    void Update()
+    {
+        _pathFinding.Update();
     }
 
     IEnumerator NextBlockOverTime()
@@ -56,7 +63,7 @@ public class Controller : MonoBehaviour
             yield return new WaitForSeconds(1f);
 
             var block = _grid.GenerateNextBlock();
-
+            _pathFinding.Regenerate();
 
             Debug.Log("NextBlock");
         }

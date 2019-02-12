@@ -56,7 +56,7 @@ public class Face
         }
     }
 
-    Axis Direction;
+    public Axis Direction;
     public Voxel[] ParentVox;
     public Vector3Int Index;
     public Vector3 Center;
@@ -127,7 +127,7 @@ public class Face
 
     public bool WalkablePattern()
     {
-        return ParentVox.First(f => f.Type == VoxelType.Block).WalkableFaces.Count(s => s == Normal)==1;
+        return ParentVox.First(f => f?.Type == VoxelType.Block).WalkableFaces.Count(s => s == Normal)==1;
     }
 
     public bool HasOneBlockParent()
