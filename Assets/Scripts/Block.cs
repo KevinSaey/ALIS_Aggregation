@@ -15,13 +15,17 @@ public class Block
     public List<Voxel> BlockVoxels;
     public GameObject goBlockParent;
 
-    //public Vector3Int X, Y, Z, MinX, MinY, MinZ;
-
     Vector3Int _rotation;
 
+    /// <summary>
+    /// This will initiale a block within the voxel grid on a given location with a given rotation according to a preset pattern
+    /// </summary>
+    /// <param name="pattern">The pattern that fits the block</param>
+    /// <param name="zeroIndex">The index of the blocks zero index (according to the pattern) within the voxel grid</param>
+    /// <param name="newRotation">The rotation of the block around the x,y,z axis in degrees</param>
+    /// <param name="grid">The global voxel grid</param>
     public Block(Pattern pattern, Vector3Int zeroIndex, Vector3Int newRotation, Grid3D grid)
     {
-
         Pattern = pattern;
         ZeroIndex = zeroIndex;
         _grid = grid;
@@ -31,14 +35,24 @@ public class Block
         BlockVoxels = GetVoxels().ToList();
         BlockVoxels.ForEach(f => f.Index += zeroIndex);
         BlockVoxels.ForEach(f => f.ParentBlock = this);//translation
-        RotateConnections();
+        RotateBlockVoxels();
     }
 
+    /// <summary>
+    /// This will initiale a block within the voxel grid with the location and orientation of a conneciton voxel according to a preset pattern
+    /// </summary>
+    /// <param name="pattern">The pattern that fits the block</param>
+    /// <param name="connPoint">The connectionvoxel of this pattern. Will be used as zero index</param>
+    /// <param name="grid">The global voxel grid</param>
     public Block(Pattern pattern, Voxel connPoint, Grid3D grid) : this(pattern, connPoint.Index, connPoint.Orientation, grid)
     {
 
     }
 
+    /// <summary>
+    /// Create a copy of the pattern voxels with the given location and orientation
+    /// </summary>
+    /// <returns>The voxels of the block</returns>
     IEnumerable<Voxel> GetVoxels()
     {
         foreach (var voxel in Pattern.Voxels)
@@ -50,6 +64,11 @@ public class Block
         }
     }
 
+    /// <summary>
+    /// Rotate a vector according the the block rotation
+    /// </summary>
+    /// <param name="vec">The Vector3Int to rotate</param>
+    /// <returns></returns>
     Vector3Int RotateVector(Vector3Int vec)
     {
         // x rotation
@@ -88,21 +107,30 @@ public class Block
         return vec;
     }
 
-    void RotateConnections()
+    /// <summary>
+    /// set the orientation of the blockvoxels to the orientation of the block
+    /// </summary>
+    void RotateBlockVoxels()
     {
-        BlockVoxels.ForEach(f => f.Orientation += _rotation);
+        BlockVoxels.ForEach(v => v.Orientation += _rotation);
     }
 
-
-    public void InstantiateGoBlock()
+    /// <summary>
+    /// Create the parrent gameobject of the block
+    /// </summary>
+    public void InstantiateGoParrentBlock()
     {
         goBlockParent = new GameObject($"Block {ZeroIndex}");
         goBlockParent.transform.position = ZeroIndex;
     }
 
+    /// <summary>
+    /// Instantiate or switch the blockvoxels gameobjects to their new state
+    /// </summary>
+    /// <param name="grid">The global grid</param>
     public void DrawBlock(Grid3D grid)
     {
-        InstantiateGoBlock();
+        InstantiateGoParrentBlock();
         foreach (var vox in BlockVoxels)
         {
             if (!(vox.Index.x < 0 || vox.Index.y < 0 || vox.Index.z < 0 ||
@@ -135,8 +163,4 @@ public class Block
             }
         }
     }
-
-
-
-
 }

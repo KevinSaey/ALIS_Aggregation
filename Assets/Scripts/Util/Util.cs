@@ -7,6 +7,10 @@ using UnityEngine;
 
 public enum Axis { X, Y, Z };
 
+
+/// <summary>
+/// All the static functionalities of the solution
+/// </summary>
 public static class Util
 {
     public static Vector3Int[] NeighbourIndex = new Vector3Int[6] { new Vector3Int(1, 0, 0), new Vector3Int(-1, 0, 0), new Vector3Int(0, 1, 0), new Vector3Int(0, -1, 0), new Vector3Int(0, 0, 1), new Vector3Int(0, 0, -1) };
@@ -23,7 +27,7 @@ public static class Util
     /// Get The neighbour indices from a given index
     /// </summary>
     /// <param name="index"></param>
-    /// <returns></returns>
+    /// <returns>array of neighbourghs</returns>
     public static Vector3Int[] GetNeighbourIndex(Vector3Int index)
     {
         return NeighbourIndex.Select(s => s + index).ToArray();

@@ -5,11 +5,12 @@ using System.Linq;
 using QuickGraph;
 using QuickGraph.Algorithms;
 
-public class PathFinding
+public class PathFinding //this class is largely a refactored version of Vicente's code
 {
+    
     Grid3D _grid;
     Mesh _mesh;
-    int _ridiculusHighNumber = 9999;
+    public int RidiculusHighNumber = 9999;
 
     public PathFinding(Grid3D grid)
     {
@@ -56,14 +57,12 @@ public class PathFinding
         {
             float t = 0;
 
-
             t = face.DistanceFromZero * 0.01f;//biggestDistance;
             t = Mathf.Clamp01(t);
 
-
             Mesh faceMesh;
             faceMesh = Drawing.MakeFace(face.Center, face.Direction, 1, t);
-            if (face.DistanceFromZero < _ridiculusHighNumber)
+            if (face.DistanceFromZero < RidiculusHighNumber)
             {
                 faceMeshes.Add(new CombineInstance() { mesh = faceMesh });
             }
@@ -81,7 +80,7 @@ public class PathFinding
     public int GetPathCount(TryFunc<Face, IEnumerable<TaggedEdge<Face, Edge>>> shortest, Face face)
     {
         shortest(face, out var path);
-        face.DistanceFromZero = path == null ? _ridiculusHighNumber : path.Count();
+        face.DistanceFromZero = path == null ? RidiculusHighNumber : path.Count();
         return face.DistanceFromZero;
     }
 }

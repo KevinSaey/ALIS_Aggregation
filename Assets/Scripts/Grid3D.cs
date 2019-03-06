@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// Global grid
+/// </summary>
 public class Grid3D
 {
-    public Voxel[,,] Voxels { get; private set; }
+    public Voxel[,,] Voxels;
     public Vector3Int Size;
     public List<Block> Blocks = new List<Block>();           // The algorithm will try to approach this point
     IGenerationAlgorithm gen;
@@ -13,7 +16,14 @@ public class Grid3D
     public Face[][,,] Faces = new Face[3][,,];
     public Edge[][,,] Edges = new Edge[3][,,];
 
-    // Start is called before the first frame update
+    public PathFinding PathFinding;
+
+
+
+    /// <summary>
+    /// Initialise a voxel grid
+    /// </summary>
+    /// <param name="size">The number of voxels in x,y,z</param>
     public Grid3D(Vector3Int size)
     {
         gen = new GenerationAlgorithm(Controller.GoTarget.transform.position.ToVector3Int());
@@ -31,7 +41,18 @@ public class Grid3D
         MakeEdges();
     }
 
-    public void MakeFaces()
+    /// <summary>
+    /// initialise the pathfinding
+    /// </summary>
+    public void IniPathFinding()
+    {
+        PathFinding = new PathFinding(this);
+    }
+
+    /// <summary>
+    /// Generate the faces of the voxelgrid
+    /// </summary>
+    public void MakeFaces() // stolen from Vicente
     {
         // make faces
         Faces[0] = new Face[Size.x + 1, Size.y, Size.z];
@@ -62,7 +83,10 @@ public class Grid3D
                 }
     }
 
-    public void MakeEdges()
+    /// <summary>
+    /// Generate the edges of the voxel grid
+    /// </summary>
+    public void MakeEdges() //stolen from Vicente
     {
         // make edges
         Edges[2] = new Edge[Size.x + 1, Size.y + 1, Size.z];
@@ -93,14 +117,24 @@ public class Grid3D
                 }
     }
 
+    /// <summary>
+    /// Generate the next possible block
+    /// </summary>
+    /// <returns>the next possible block (outside global grid)</returns>
     public Block GenerateNextBlock()
     {
         Block newBlock = gen.GetNextBlock(this);
         if (newBlock != null)
             AddBlockToGrid(newBlock);
+        else
+            Debug.Log("No next block found");
         return newBlock;
     }
 
+    /// <summary>
+    /// Add the generated Block to the grid
+    /// </summary>
+    /// <param name="block">the Block to add</param>
     public void AddBlockToGrid(Block block)
     {
         Blocks.Add(block);
@@ -115,11 +149,14 @@ public class Grid3D
             }
         }
 
-
         Debug.Log($"{GetClimableFaces().Count()} Climable faces");
-
     }
 
+    /// <summary>
+    /// Check if a given block can exist within the voxel grid
+    /// </summary>
+    /// <param name="block">The Block to check</param>
+    /// <returns>if the block can exist or not</returns>
     public bool CanBlockExist(Block block)
     {
         foreach (var vox in block.BlockVoxels.Where(s => s.Type == VoxelType.Block))
@@ -135,7 +172,11 @@ public class Grid3D
         return true;
     }
 
-    public IEnumerable<Face> GetClimableFaces()
+    /// <summary>
+    /// Get all the climable faces within the grid
+    /// </summary>
+    /// <returns>List of climable faces</returns>
+    public IEnumerable<Face> GetClimableFaces() //Stolen from Vicente
     {
         for (int n = 0; n < 3; n++)
         {
@@ -155,6 +196,10 @@ public class Grid3D
         }
     }
 
+    /// <summary>
+    /// Get a flattened list of all the edges
+    /// </summary>
+    /// <returns>flattened list of all the edges</returns>
     public IEnumerable<Edge> GetEdges()
     {
         for (int n = 0; n < 3; n++)
@@ -172,16 +217,29 @@ public class Grid3D
         }
     }
 
+    /// <summary>
+    /// Get a Voxel at a given index within the grid
+    /// </summary>
+    /// <param name="index">Index of the Voxel</param>
+    /// <returns>The voxel at the index</returns>
     public Voxel GetVoxelAt(Vector3Int index)
     {
         return Voxels[index.x, index.y, index.z];
     }
-
-    private void AddVoxel(Voxel vox)
+    
+    /// <summary>
+    /// Add a voxel to the grid
+    /// </summary>
+    /// <param name="vox">Voxel existing outside the grid</param>
+    public void AddVoxel(Voxel vox)
     {
         Voxels[vox.Index.x, vox.Index.y, vox.Index.z].Copy(vox);
     }
 
+    /// <summarty>
+    /// Switch the visibility of the blocks within the grid
+    /// </summary>
+    /// <param name="vis">True = visible, false = hideden</param>
     public void SwitchBlockVisibility(bool vis)
     {
         Blocks.ForEach(b => b.goBlockParent.SetActive(vis));

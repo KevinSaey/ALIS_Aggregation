@@ -2,7 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// The possible types of a voxel (Empty, Connection, Block)
+/// </summary>
 public enum VoxelType { Empty, Connection, Block };
+
+/// <summary>
+/// Representation of a voxel, can be independent of the voxelgrid
+/// </summary>
 public class Voxel
 {
     public Vector3Int Index;
@@ -62,6 +69,10 @@ public class Voxel
         WalkableFaces = walkableFaces;
     }
 
+    /// <summary>
+    /// Make a copy of the voxel
+    /// </summary>
+    /// <param name="orig">Original voxel</param>
     public void Copy(Voxel orig)
     {
         this.Type = orig.Type;
@@ -75,11 +86,18 @@ public class Voxel
         this.WalkableFaces = orig.WalkableFaces;
     }
 
+    /// <summary>
+    /// Clone all the fields of the voxel to a new voxel
+    /// </summary>
+    /// <returns>The cloned voxel</returns>
     public Voxel ShallowClone()
     {
         return MemberwiseClone() as Voxel;
     }
 
+    /// <summary>
+    /// Remove the voxels gameobject
+    /// </summary>
     public void DestroyGoVoxel()
     {
         Debug.Log("The voxel went to the dark side!");

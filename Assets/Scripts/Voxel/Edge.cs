@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class Edge
 {
+    //Based on Vicente's code
     public Vector3Int Index;
     public Axis Direction;
     public Vector3 Center;

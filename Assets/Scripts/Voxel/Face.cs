@@ -6,9 +6,13 @@ using System.Linq;
 
 public class Face
 {
+    //Adapted Vicente's code
     public enum BoundaryType { Inside = 0, Left = -1, Right = 1, Outside = 2 }
 
-    public bool Climable
+    /// <summary>
+    /// Check if this face is climable. Horizontal planes (floors), and vertical planes (walls) according to pattern are climable. Ceilings aren't
+    /// </summary>
+    public bool Climable 
     {
         get
         {
@@ -16,7 +20,10 @@ public class Face
         }
     }
 
-    public BoundaryType Boundary
+    /// <summary>
+    /// Get the Boundary type of this face.
+    /// </summary>
+    public BoundaryType Boundary 
     {
         get
         {
@@ -30,7 +37,10 @@ public class Face
         }
     }
 
-    public Vector3Int Normal
+    /// <summary>
+    /// Get the normal of this face. Only faces with boundry type 'Outside' have normals
+    /// </summary>
+    public Vector3Int Normal 
     {
         get
         {
@@ -63,7 +73,15 @@ public class Face
     Grid3D _grid;
     public int DistanceFromZero = 0;
 
-    public Face(int x, int y, int z, Axis direction, Grid3D grid)
+    /// <summary>
+    /// Initialise a face within a voxel grid
+    /// </summary>
+    /// <param name="x">X index</param>
+    /// <param name="y">Y index</param>
+    /// <param name="z">Z index</param>
+    /// <param name="direction">Allignment of normal the face (.X, .Y, .Z)</param>
+    /// <param name="grid">The voxelgrid where the face exists in</param>
+    public Face(int x, int y, int z, Axis direction, Grid3D grid) 
     {
         _grid = grid;
         Index = new Vector3Int(x, y, z);
@@ -76,7 +94,11 @@ public class Face
         Center = GetCenter();
     }
 
-    Voxel[] GetVoxels()
+    /// <summary>
+    /// Get the voxels at both side of the grid
+    /// </summary>
+    /// <returns>The the two voxels (if the face is at the edge of the voxelgrid, the voxel outside the grid will be null)</returns>
+    Voxel[] GetVoxels() 
     {
         int x = Index.x;
         int y = Index.y;
@@ -107,7 +129,11 @@ public class Face
         }
     }
 
-    Vector3 GetCenter()
+    /// <summary>
+    /// Get the center of this face.
+    /// </summary>
+    /// <returns>The center of this face</returns>
+    Vector3 GetCenter() 
     {
         int x = Index.x;
         int y = Index.y;
@@ -126,12 +152,20 @@ public class Face
         }
     }
 
-    public bool WalkablePattern()
+    /// <summary>
+    /// Check if the face is part of the climable faces of the pattern
+    /// </summary>
+    /// <returns>The face is walkable</returns>
+    public bool WalkablePattern() 
     {
         return ParentVox.First(f => f?.Type == VoxelType.Block).WalkableFaces.Count(s => s == Normal)==1;
     }
 
-    public bool HasOneBlockParent()
+    /// <summary>
+    /// Check if this face has only one parrent voxel with Voxel type block
+    /// </summary>
+    /// <returns></returns>
+    public bool HasOneBlockParent() 
     {
         return ParentVox.Count(s => s?.Type == VoxelType.Block) == 1;
     }

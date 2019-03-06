@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+// Completely stolen from Vicente
 public class MainCamera : MonoBehaviour
 {
     Vector3 _target;

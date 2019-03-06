@@ -5,6 +5,7 @@ using static UnityEngine.Mathf;
 
 class Drawing : MonoBehaviour
 {
+    //copy pasted from Vicente's project
     [SerializeField]
     Material _opaque;
     [SerializeField]

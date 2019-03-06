@@ -25,9 +25,9 @@ public class Controller : MonoBehaviour
     int _voxelSize, _minCon;
     public static int VoxelSize, MinCon;
 
-    Block test;
+    Block startBlock;
     Grid3D _grid;
-    PathFinding _pathFinding;
+    
     bool _showPath;
 
 
@@ -43,11 +43,10 @@ public class Controller : MonoBehaviour
 
         _grid = new Grid3D(Size);
         var pattern = new PatternA();
-        test = new Block(pattern, new Vector3Int(Size.x / 2, 1, Size.y / 2), new Vector3Int(0, 0, 0), _grid);
-        _grid.AddBlockToGrid(test);
+        startBlock = new Block(pattern, new Vector3Int(Size.x / 2, 1, Size.y / 2), new Vector3Int(0, 180, 0), _grid);
+        _grid.AddBlockToGrid(startBlock);
 
-        _pathFinding = new PathFinding(_grid);
-
+        _grid.IniPathFinding();
 
         //StartCoroutine(NextBlockOverTime());
     }
@@ -66,14 +65,13 @@ public class Controller : MonoBehaviour
         {
             NextBlock();
         }
-
     }
 
     void Update()
     {
         if (_showPath)
         {
-            _pathFinding.DrawMesh();
+            _grid.PathFinding.DrawMesh();
         }
     }
 
@@ -81,7 +79,7 @@ public class Controller : MonoBehaviour
     {
         var block = _grid.GenerateNextBlock();
         _grid.SwitchBlockVisibility(!_showPath);
-        _pathFinding.Regenerate();
+        _grid.PathFinding.Regenerate();
         Debug.Log("NextBlock");
     }
 
@@ -94,9 +92,8 @@ public class Controller : MonoBehaviour
 
             var block = _grid.GenerateNextBlock();
             _grid.SwitchBlockVisibility(!_showPath);
-            _pathFinding.Regenerate();
+            _grid.PathFinding.Regenerate();
             Debug.Log("NextBlock");
         }
     }
-
 }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// (depricated) Random aggregation of blocks
+/// </summary>
 public class Agregation : MonoBehaviour
 {
 

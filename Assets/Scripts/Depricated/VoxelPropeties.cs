@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// (depricated)
+/// </summary>
 public class VoxelPropeties : MonoBehaviour
 {
 

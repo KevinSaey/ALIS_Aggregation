@@ -17,12 +17,13 @@ public abstract class Pattern
         InitialisePattern();
     }
 
+
+    /// <summary>
+    /// Initialise a pattern, setting the block voxels, the connection voxels and their normals in relation to index 0,0,0
+    /// </summary>
     public void InitialisePattern()
     {
-        //Create basevoxel
-        //Voxels.Add(new Voxel(0, 0, 0, VoxelType.Block, PatternNormal, this));
-
-        // temporary hard coded pattern
+        // temporary hard coded pattern. This should be imported from rhino
         List<Vector3Int> walkableFaces = new List<Vector3Int> { new Vector3Int(0, 0, 1), new Vector3Int(0, 0, -1) };
         for (int y = 0; y < 6; y++)
             for (int x = -1; x <= 1; x++)
@@ -66,6 +67,9 @@ public abstract class Pattern
 
 public class PatternA : Pattern
 {
+    /// <summary>
+    /// shift the indexes of the pattern with x -1
+    /// </summary>
     public PatternA()
     {
         base.InitialisePattern();
@@ -75,9 +79,23 @@ public class PatternA : Pattern
 
 public class PatternB : Pattern
 {
+    /// <summary>
+    /// shift the indexes of the pattern with x +1
+    /// </summary>
     public PatternB()
     {
         base.InitialisePattern();
         base.ShiftPattern(Vector3Int.right);
+    }
+}
+
+public class PatternC : Pattern
+{
+    /// <summary>
+    /// standard pattern
+    /// </summary>
+    public PatternC()
+    {
+        base.InitialisePattern();
     }
 }
