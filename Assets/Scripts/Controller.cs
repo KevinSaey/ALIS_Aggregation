@@ -30,6 +30,7 @@ public class Controller : MonoBehaviour
     
     bool _showPath;
 
+    public RhinoImporter RhinoImport;
 
     void Start()
     {
@@ -41,14 +42,17 @@ public class Controller : MonoBehaviour
         VoxelSize = _voxelSize;
         MinCon = _minCon;
 
+        
         _grid = new Grid3D(Size);
         var pattern = new PatternA();
-        startBlock = new Block(pattern, new Vector3Int(Size.x / 2, 1, Size.y / 2), new Vector3Int(0, 180, 0), _grid);
-        _grid.AddBlockToGrid(startBlock);
+        //startBlock = new Block(pattern, new Vector3Int(Size.x / 2, 1, Size.y / 2), new Vector3Int(0, 180, 0), _grid);
 
+        //_grid.AddBlockToGrid(startBlock);
+
+        RhinoImport = new RhinoImporter(_grid);
         _grid.IniPathFinding();
 
-        //StartCoroutine(NextBlockOverTime());
+        //StartCoroutine(NextBlockOverTime()); //To generate blocks over time
     }
 
     void OnGUI()
@@ -75,6 +79,9 @@ public class Controller : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Generate the next block
+    /// </summary>
     public void NextBlock()
     {
         var block = _grid.GenerateNextBlock();
@@ -83,12 +90,15 @@ public class Controller : MonoBehaviour
         Debug.Log("NextBlock");
     }
 
-
-    IEnumerator NextBlockOverTime()
+    /// <summary>
+    /// Generate a next block over time
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator NextBlockOverTime(float time)
     {
         while (true)
         {
-            //yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(time);
 
             var block = _grid.GenerateNextBlock();
             _grid.SwitchBlockVisibility(!_showPath);

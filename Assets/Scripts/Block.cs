@@ -65,19 +65,25 @@ public class Block
     }
 
     /// <summary>
-    /// Rotate a vector according the the block rotation
+    /// Rotate a vector according the the block rotation (only works for axis aligned orientations)
     /// </summary>
     /// <param name="vec">The Vector3Int to rotate</param>
-    /// <returns></returns>
+    /// <returns>the rotated vector</returns>
     Vector3Int RotateVector(Vector3Int vec)
     {
+        //reduce the rotations to 360 degrees (this limits the maximum size of the voxelgrid)
+        vec.x = vec.x % 360;
+        vec.x = vec.x % 360;
+        vec.x = vec.x % 360;
+        vec.x = vec.x % 360;
+
         // x rotation
         Vector3Int[] rotation_x = new Vector3Int[]
         {
             vec,
-            new Vector3Int(vec.x, vec.z, -vec.y),
+            new Vector3Int(vec.x, -vec.z, vec.y),
             new Vector3Int(vec.x, -vec.y, -vec.z),
-            new Vector3Int(vec.x, -vec.z, vec.y)
+            new Vector3Int(vec.x, vec.z, -vec.y)//
         };
 
         vec = rotation_x[_rotation.x / 90 % 4];
@@ -86,9 +92,9 @@ public class Block
         Vector3Int[] rotation_y = new Vector3Int[]
         {
             vec,
-            new Vector3Int(-vec.z, vec.y, vec.x),
+            new Vector3Int(vec.z, vec.y, -vec.x),
             new Vector3Int(-vec.x, vec.y, -vec.z),
-            new Vector3Int(vec.z, vec.y, -vec.x)
+            new Vector3Int(-vec.z, vec.y, vec.x)
         };
 
         vec = rotation_y[_rotation.y / 90 % 4];
@@ -100,6 +106,7 @@ public class Block
             new Vector3Int(-vec.y, vec.x, vec.z),
             new Vector3Int(-vec.x, -vec.y, vec.z),
             new Vector3Int(vec.y, -vec.x, vec.z)
+
         };
 
         vec = rotation_z[_rotation.z / 90 % 4];
@@ -122,6 +129,7 @@ public class Block
     {
         goBlockParent = new GameObject($"Block {ZeroIndex}");
         goBlockParent.transform.position = ZeroIndex;
+        goBlockParent.transform.rotation = Quaternion.Euler(_rotation);
     }
 
     /// <summary>

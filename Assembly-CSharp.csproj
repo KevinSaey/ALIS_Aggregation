@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Util\captureCamera.cs" />
     <Compile Include="Assets\Scripts\Util\Drawing.cs" />
     <Compile Include="Assets\Scripts\Util\MainCamera.cs" />
+    <Compile Include="Assets\Scripts\Util\RhinoImporter.cs" />
     <Compile Include="Assets\Scripts\Util\Util.cs" />
     <Compile Include="Assets\Scripts\Voxel\Edge.cs" />
     <Compile Include="Assets\Scripts\Voxel\Face.cs" />

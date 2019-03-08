@@ -101,14 +101,14 @@ public class GenerationAlgorithm : IGenerationAlgorithm //Coded together with Ma
             foreach (var face in grid.GetVoxelAt(vox.Index).Faces.Where(f => f.Climable))
             {
                 int test = pathFinding.GetPathCount(pathFinding.CreateGraph(), face);
-                if (test != pathFinding.RidiculusHighNumber)
+                if (test != pathFinding.RidiculousHighNumber)
                 {
                     return true;
                 }
             }
         }
 
-        //restor the original state of the voxelgrid
+        //restore the original state of the voxelgrid
         foreach (var v in prevVoxels) grid.AddVoxel(v);
 
         return false;

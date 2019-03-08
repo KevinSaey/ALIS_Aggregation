@@ -10,7 +10,7 @@ public class PathFinding //this class is largely a refactored version of Vicente
     
     Grid3D _grid;
     Mesh _mesh;
-    public int RidiculusHighNumber = 9999;
+    public int RidiculousHighNumber = 9999;
 
     public PathFinding(Grid3D grid)
     {
@@ -39,11 +39,11 @@ public class PathFinding //this class is largely a refactored version of Vicente
         var graph = graphEdges.ToUndirectedGraph<Face, TaggedEdge<Face, Edge>>();
 
         // start face for shortest path
-        var start1 = _grid.GetVoxelAt(_grid.Blocks[0].ZeroIndex).Faces.First(f => f != null && f.Climable);
+        var start = _grid.Faces[1][0,0,0];
         //var start2 = _grid.GetVoxelAt(_grid.Blocks[0].ZeroIndex).Faces.Last(f => f != null && f.Climable);
 
         // calculate shortest path from start face to all boundary faces
-        return graph.ShortestPathsDijkstra(e => 1.0, start1);
+        return graph.ShortestPathsDijkstra(e => 1.0, start);
     }
 
     public void GenerateClimableMeshes(TryFunc<Face, IEnumerable<TaggedEdge<Face, Edge>>> shortest)
@@ -62,7 +62,7 @@ public class PathFinding //this class is largely a refactored version of Vicente
 
             Mesh faceMesh;
             faceMesh = Drawing.MakeFace(face.Center, face.Direction, 1, t);
-            if (face.DistanceFromZero < RidiculusHighNumber)
+            if (face.DistanceFromZero < RidiculousHighNumber)
             {
                 faceMeshes.Add(new CombineInstance() { mesh = faceMesh });
             }
@@ -80,7 +80,7 @@ public class PathFinding //this class is largely a refactored version of Vicente
     public int GetPathCount(TryFunc<Face, IEnumerable<TaggedEdge<Face, Edge>>> shortest, Face face)
     {
         shortest(face, out var path);
-        face.DistanceFromZero = path == null ? RidiculusHighNumber : path.Count();
+        face.DistanceFromZero = path == null ? RidiculousHighNumber : path.Count();
         return face.DistanceFromZero;
     }
 }

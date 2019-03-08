@@ -9,7 +9,7 @@ public enum Axis { X, Y, Z };
 
 
 /// <summary>
-/// All the static functionalities of the solution
+/// Global functions to be used allover the solution
 /// </summary>
 public static class Util
 {

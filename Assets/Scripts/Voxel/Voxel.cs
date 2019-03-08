@@ -23,6 +23,14 @@ public class Voxel
     public List<Face> Faces = new List<Face>(6);
 
     /// <summary>
+    /// Instantiate an empty voxel
+    /// </summary>
+    public Voxel()
+    {
+
+    }
+
+    /// <summary>
     /// Instantiate a voxel.
     /// </summary>
     /// <param name="x">X index of the voxel</param>
@@ -75,15 +83,15 @@ public class Voxel
     /// <param name="orig">Original voxel</param>
     public void Copy(Voxel orig)
     {
-        this.Type = orig.Type;
-        this.Orientation = orig.Orientation;
-        if (this.Type != VoxelType.Block)
+        Type = orig.Type;
+        Orientation = orig.Orientation;
+        if (Type != VoxelType.Block)
         {
-            this.ParentBlock = orig.ParentBlock;
+            ParentBlock = orig.ParentBlock;
         }
-        this.ParentPattern = orig.ParentPattern;
-        this.Name = orig.Name;
-        this.WalkableFaces = orig.WalkableFaces;
+        ParentPattern = orig.ParentPattern;
+        Name = orig.Name;
+        WalkableFaces = orig.WalkableFaces;
     }
 
     /// <summary>

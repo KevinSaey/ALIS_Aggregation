@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class captureCamera : MonoBehaviour {
+public class captureCamera : MonoBehaviour // stolen from Vicente
+{
 
     [SerializeField]
     bool EnableCapture = false;
@@ -12,36 +13,27 @@ public class captureCamera : MonoBehaviour {
 
 
     void Start()
-
     {
-
         Time.captureFramerate = 25;
-
     }
 
 
 
     void Update()
-
     {
 
         if (EnableCapture)
-
             StartCoroutine(Capture());
-
     }
 
 
 
     IEnumerator Capture()
-
     {
-
         yield return new WaitForSeconds(0.2f);
 
         string filename = $@"{folder}\image_{Time.frameCount:00000}.png";
 
         ScreenCapture.CaptureScreenshot(filename, 1);
-
     }
 }

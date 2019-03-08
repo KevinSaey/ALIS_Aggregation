@@ -8,6 +8,7 @@ public class Face
 {
     //Adapted Vicente's code
     public enum BoundaryType { Inside = 0, Left = -1, Right = 1, Outside = 2 }
+    bool _climableFloor;
 
     /// <summary>
     /// Check if this face is climable. Horizontal planes (floors), and vertical planes (walls) according to pattern are climable. Ceilings aren't
@@ -16,7 +17,8 @@ public class Face
     {
         get
         {
-            return Normal != Vector3Int.down && HasOneBlockParent() && (WalkablePattern() || Normal == Vector3Int.up);
+
+            return (Normal != Vector3Int.down && HasOneBlockParent() && (WalkablePattern() || Normal == Vector3Int.up))||Normal == Vector3Int.up&&Index.y == 0;
         }
     }
 

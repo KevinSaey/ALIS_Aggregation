@@ -17,9 +17,7 @@ public class Grid3D
     public Edge[][,,] Edges = new Edge[3][,,];
 
     public PathFinding PathFinding;
-
-
-
+    
     /// <summary>
     /// Initialise a voxel grid
     /// </summary>

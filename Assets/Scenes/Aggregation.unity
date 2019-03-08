@@ -454,7 +454,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69b2364deb618df4e8fcdfec2c5900d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _goVoxel: {fileID: 5361632483838581337, guid: dc9bbe3a7cc123f46b3c917d137ecf8e,
+  _goVoxel: {fileID: 9205668691657546995, guid: b61e4c5036e56274db239fccbd5d6bc2,
     type: 3}
   _goTarget: {fileID: 1858465559}
   _matBlock: {fileID: 2100000, guid: 6c7d30222bd8a7c43bf27dd54fc4f824, type: 2}
