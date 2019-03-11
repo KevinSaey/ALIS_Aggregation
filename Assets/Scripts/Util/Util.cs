@@ -22,7 +22,6 @@ public static class Util
         return new Vector3Int(x, y, z);
     }
 
-
     /// <summary>
     /// Get The neighbour indices from a given index
     /// </summary>

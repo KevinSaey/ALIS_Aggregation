@@ -21,6 +21,7 @@ public class Voxel
     public GameObject Go;
     public List<Vector3Int> WalkableFaces = new List<Vector3Int>();
     public List<Face> Faces = new List<Face>(6);
+    public float Value;
 
     /// <summary>
     /// Instantiate an empty voxel
@@ -92,6 +93,20 @@ public class Voxel
         ParentPattern = orig.ParentPattern;
         Name = orig.Name;
         WalkableFaces = orig.WalkableFaces;
+    }
+
+    /// <summary>
+    /// Get the corners of this voxel
+    /// </summary>
+    /// <returns>List of corners</returns>
+    public IEnumerable<Corner> GetCorners()
+    {
+        for (int y = 0; y <= 1; y++)
+            for (int z = 0; z <= 1; z++)
+                for (int x = 0; x <= 1; x++)
+                {
+                    yield return Controller.Grid.Corners[Index.x + x, Index.y + y, Index.z + z];
+                }
     }
 
     /// <summary>

@@ -6,7 +6,7 @@ using System.Linq;
 /// <summary>
 /// Global grid
 /// </summary>
-public class Grid3D
+public class Grid3D // combination of Vicente's code and mine
 {
     public Voxel[,,] Voxels;
     public Vector3Int Size;
@@ -15,9 +15,13 @@ public class Grid3D
 
     public Face[][,,] Faces = new Face[3][,,];
     public Edge[][,,] Edges = new Edge[3][,,];
+    public Corner[,,] Corners;
+    public Vector3Int Corner;
 
-    public PathFinding PathFinding;
-    
+    public PathFinding PFinding;
+    public StructuralAnalysis SAnalysis;
+
+
     /// <summary>
     /// Initialise a voxel grid
     /// </summary>
@@ -26,7 +30,28 @@ public class Grid3D
     {
         gen = new GenerationAlgorithm(Controller.GoTarget.transform.position.ToVector3Int());
         Size = size;
+        Corner = Vector3Int.zero;
 
+        MakeVoxels();
+        MakeCorners();
+        MakeFaces();
+        MakeEdges();
+    }
+
+    /// <summary>
+    /// initialise the pathfinding & Strucutral analysis 
+    /// </summary>
+    public void IniPathFindingStrucutralAnalysis()
+    {
+        PFinding = new PathFinding(this);
+        SAnalysis = new StructuralAnalysis(this);
+    }
+
+    /// <summary>
+    /// Generate the voxels of the grid
+    /// </summary>
+    void MakeVoxels() // stolen from Vicente
+    {
         // make voxels
         Voxels = new Voxel[Size.x, Size.y, Size.z];
 
@@ -34,17 +59,6 @@ public class Grid3D
             for (int y = 0; y < Size.y; y++)
                 for (int x = 0; x < Size.x; x++)
                     Voxels[x, y, z] = new Voxel(x, y, z, VoxelType.Empty);
-
-        MakeFaces();
-        MakeEdges();
-    }
-
-    /// <summary>
-    /// initialise the pathfinding
-    /// </summary>
-    public void IniPathFinding()
-    {
-        PathFinding = new PathFinding(this);
     }
 
     /// <summary>
@@ -116,6 +130,21 @@ public class Grid3D
     }
 
     /// <summary>
+    /// Generate the corners of the voxel grid
+    /// </summary>
+    public void MakeCorners() //stolen from Vicente
+    {
+        Corners = new Corner[Size.x + 1, Size.y + 1, Size.z + 1];
+
+        for (int z = 0; z < Size.z + 1; z++)
+            for (int y = 0; y < Size.y + 1; y++)
+                for (int x = 0; x < Size.x + 1; x++)
+                {
+                    Corners[x, y, z] = new Corner(new Vector3Int(x, y, z), this);
+                }
+    }
+
+    /// <summary>
     /// Generate the next possible block
     /// </summary>
     /// <returns>the next possible block (outside global grid)</returns>
@@ -146,7 +175,7 @@ public class Grid3D
                 AddVoxel(vox);
             }
         }
-
+        
         Debug.Log($"{GetClimableFaces().Count()} Climable faces");
     }
 
@@ -198,7 +227,7 @@ public class Grid3D
     /// Get a flattened list of all the edges
     /// </summary>
     /// <returns>flattened list of all the edges</returns>
-    public IEnumerable<Edge> GetEdges()
+    public IEnumerable<Edge> GetEdges() // stolen from Vicente
     {
         for (int n = 0; n < 3; n++)
         {
@@ -216,6 +245,34 @@ public class Grid3D
     }
 
     /// <summary>
+    /// Get all the voxels
+    /// </summary>
+    /// <returns>Flattened list of all the voxels in the grid</returns>
+    public IEnumerable<Voxel> GetVoxels() // stolen from Vicente
+    {
+        for (int z = 0; z < Size.z; z++)
+            for (int y = 0; y < Size.y; y++)
+                for (int x = 0; x < Size.x; x++)
+                {
+                    yield return Voxels[x, y, z];
+                }
+    }
+
+    /// <summary>
+    /// Get all the corners of the grid
+    /// </summary>
+    /// <returns>flattened list of corners within the grid</returns>
+    public IEnumerable<Corner> GetCorners() //stolen from Vicente
+    {
+        for (int z = 0; z < Size.z + 1; z++)
+            for (int y = 0; y < Size.y + 1; y++)
+                for (int x = 0; x < Size.x + 1; x++)
+                {
+                    yield return Corners[x, y, z];
+                }
+    }
+
+    /// <summary>
     /// Get a Voxel at a given index within the grid
     /// </summary>
     /// <param name="index">Index of the Voxel</param>
@@ -224,7 +281,7 @@ public class Grid3D
     {
         return Voxels[index.x, index.y, index.z];
     }
-    
+
     /// <summary>
     /// Add a voxel to the grid
     /// </summary>

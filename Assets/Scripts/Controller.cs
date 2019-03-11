@@ -26,9 +26,15 @@ public class Controller : MonoBehaviour
     public static int VoxelSize, MinCon;
 
     Block startBlock;
-    Grid3D _grid;
-    
+    public static Grid3D Grid;
+
     bool _showPath;
+    bool _showStructuralAnalysis;
+    bool _showBlocks;
+    bool _iniPath = true;
+    bool _iniSA = true;
+
+    float _tempDisplacement = 10f;
 
     public RhinoImporter RhinoImport;
 
@@ -42,32 +48,66 @@ public class Controller : MonoBehaviour
         VoxelSize = _voxelSize;
         MinCon = _minCon;
 
-        
-        _grid = new Grid3D(Size);
+        Grid = new Grid3D(Size);
+
         var pattern = new PatternA();
         //startBlock = new Block(pattern, new Vector3Int(Size.x / 2, 1, Size.y / 2), new Vector3Int(0, 180, 0), _grid);
 
         //_grid.AddBlockToGrid(startBlock);
-
-        RhinoImport = new RhinoImporter(_grid);
-        _grid.IniPathFinding();
-
+        Grid.IniPathFindingStrucutralAnalysis();
+        
         //StartCoroutine(NextBlockOverTime()); //To generate blocks over time
     }
 
-    void OnGUI()
+    void OnGUI() //Vicente
     {
+        int buttonHeight = 30;
+        int buttonWidth = 150;
         int i = 1;
-        int s = 25;
+        int s = buttonHeight + 5;
 
-        if (GUI.Button(new Rect(s, s * i++, 100, 20), "Switch graph"))
+        if (GUI.Button(new Rect(s, s * i++, buttonWidth, buttonHeight), "Import from rhino"))
         {
-            _showPath = !_showPath;
-            _grid.SwitchBlockVisibility(!_showPath);
+            RhinoImport = new RhinoImporter(Grid);
         }
-        if (GUI.Button(new Rect(s, s * i++, 100, 20), "Generate Next Block"))
+        if (GUI.Button(new Rect(s, s * i++, buttonWidth, buttonHeight), "Show Blocks"))
+        {
+            _showPath = false;
+            _showStructuralAnalysis = false;
+            _showBlocks = true;
+            Grid.SwitchBlockVisibility(_showBlocks);
+        }
+        if (GUI.Button(new Rect(s, s * i++, buttonWidth, buttonHeight), "Show Structural Analysis")) //DO NOT USE! Not working yet
+        {
+            if (_iniSA == true)
+            {
+                Grid.SAnalysis.Analysis();
+                _iniSA = false;
+            }
+            _showPath = false;
+            _showStructuralAnalysis = true;
+            _showBlocks = false;
+            Grid.SwitchBlockVisibility(_showBlocks);
+        }
+        _tempDisplacement = GUI.HorizontalSlider(new Rect(s, s * i++, buttonWidth, buttonHeight), _tempDisplacement, 0, 500);
+        if (GUI.Button(new Rect(s, s * i++, buttonWidth, buttonHeight), "Show Graph"))
+        {
+            if (_iniPath == true)
+            {
+                Grid.PFinding.Regenerate();
+                _iniPath = false;
+            }
+            
+            _showPath = true;
+            _showStructuralAnalysis = false;
+            _showBlocks = false;
+            Grid.SwitchBlockVisibility(_showBlocks);
+        }
+        if (GUI.Button(new Rect(s, s * i++, buttonWidth, buttonHeight), "Generate Next Block"))
         {
             NextBlock();
+            Grid.SAnalysis.Analysis();
+            Grid.SwitchBlockVisibility(_showBlocks);
         }
     }
 
@@ -75,7 +115,11 @@ public class Controller : MonoBehaviour
     {
         if (_showPath)
         {
-            _grid.PathFinding.DrawMesh();
+            Grid.PFinding.DrawMesh();
+        }
+        if (_showStructuralAnalysis)
+        {
+            Grid.SAnalysis.DrawMesh(_tempDisplacement);
         }
     }
 
@@ -84,9 +128,10 @@ public class Controller : MonoBehaviour
     /// </summary>
     public void NextBlock()
     {
-        var block = _grid.GenerateNextBlock();
-        _grid.SwitchBlockVisibility(!_showPath);
-        _grid.PathFinding.Regenerate();
+        var block = Grid.GenerateNextBlock();
+        Grid.SwitchBlockVisibility(!_showPath);
+        Grid.PFinding.Regenerate();
+        Grid.SAnalysis.Analysis();
         Debug.Log("NextBlock");
     }
 
@@ -100,9 +145,10 @@ public class Controller : MonoBehaviour
         {
             yield return new WaitForSeconds(time);
 
-            var block = _grid.GenerateNextBlock();
-            _grid.SwitchBlockVisibility(!_showPath);
-            _grid.PathFinding.Regenerate();
+            var block = Grid.GenerateNextBlock();
+            Grid.SwitchBlockVisibility(!_showPath);
+            Grid.PFinding.Regenerate();
+            Grid.SAnalysis.Analysis();
             Debug.Log("NextBlock");
         }
     }

@@ -4,28 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class Face
+public class Face //Adapted Vicente's code
 {
-    //Adapted Vicente's code
     public enum BoundaryType { Inside = 0, Left = -1, Right = 1, Outside = 2 }
     bool _climableFloor;
 
     /// <summary>
     /// Check if this face is climable. Horizontal planes (floors), and vertical planes (walls) according to pattern are climable. Ceilings aren't
     /// </summary>
-    public bool Climable 
+    public bool Climable
     {
         get
         {
-
-            return (Normal != Vector3Int.down && HasOneBlockParent() && (WalkablePattern() || Normal == Vector3Int.up))||Normal == Vector3Int.up&&Index.y == 0;
+            return (Normal != Vector3Int.down && HasOneBlockParent() && (WalkablePattern() || Normal == Vector3Int.up)) || Normal == Vector3Int.up && Index.y == 0;
         }
     }
 
     /// <summary>
     /// Get the Boundary type of this face.
     /// </summary>
-    public BoundaryType Boundary 
+    public BoundaryType Boundary//VS
     {
         get
         {
@@ -42,7 +40,7 @@ public class Face
     /// <summary>
     /// Get the normal of this face. Only faces with boundry type 'Outside' have normals
     /// </summary>
-    public Vector3Int Normal 
+    public Vector3Int Normal//VS
     {
         get
         {
@@ -83,7 +81,7 @@ public class Face
     /// <param name="z">Z index</param>
     /// <param name="direction">Allignment of normal the face (.X, .Y, .Z)</param>
     /// <param name="grid">The voxelgrid where the face exists in</param>
-    public Face(int x, int y, int z, Axis direction, Grid3D grid) 
+    public Face(int x, int y, int z, Axis direction, Grid3D grid)
     {
         _grid = grid;
         Index = new Vector3Int(x, y, z);
@@ -100,7 +98,7 @@ public class Face
     /// Get the voxels at both side of the grid
     /// </summary>
     /// <returns>The the two voxels (if the face is at the edge of the voxelgrid, the voxel outside the grid will be null)</returns>
-    Voxel[] GetVoxels() 
+    Voxel[] GetVoxels()//VS
     {
         int x = Index.x;
         int y = Index.y;
@@ -135,7 +133,7 @@ public class Face
     /// Get the center of this face.
     /// </summary>
     /// <returns>The center of this face</returns>
-    Vector3 GetCenter() 
+    Vector3 GetCenter()//VS
     {
         int x = Index.x;
         int y = Index.y;
@@ -155,19 +153,60 @@ public class Face
     }
 
     /// <summary>
+    /// Get the corners of this face within the voxelgrid
+    /// </summary>
+    /// <returns></returns>
+    Corner[] GetCorners()//VS
+    {
+        int x = Index.x;
+        int y = Index.y;
+        int z = Index.z;
+
+        switch (Direction)
+        {
+            case Axis.X:
+                return new[]
+                {
+                 _grid.Corners[x, y, z],
+                 _grid.Corners[x, y + 1, z],
+                 _grid.Corners[x, y, z + 1],
+                 _grid.Corners[x, y + 1, z + 1]
+                };
+            case Axis.Y:
+                return new[]
+                {
+                 _grid.Corners[x, y, z],
+                 _grid.Corners[x + 1, y, z],
+                 _grid.Corners[x, y, z + 1],
+                 _grid.Corners[x + 1, y, z + 1]
+                };
+            case Axis.Z:
+                return new[]
+                {
+                 _grid.Corners[x, y, z],
+                 _grid.Corners[x + 1, y, z],
+                 _grid.Corners[x, y + 1, z],
+                 _grid.Corners[x + 1, y + 1, z]
+                };
+            default:
+                throw new Exception("Wrong direction.");
+        }
+    }
+
+    /// <summary>
     /// Check if the face is part of the climable faces of the pattern
     /// </summary>
     /// <returns>The face is walkable</returns>
-    public bool WalkablePattern() 
+    public bool WalkablePattern()
     {
-        return ParentVox.First(f => f?.Type == VoxelType.Block).WalkableFaces.Count(s => s == Normal)==1;
+        return ParentVox.First(f => f?.Type == VoxelType.Block).WalkableFaces.Count(s => s == Normal) == 1;
     }
 
     /// <summary>
     /// Check if this face has only one parrent voxel with Voxel type block
     /// </summary>
     /// <returns></returns>
-    public bool HasOneBlockParent() 
+    public bool HasOneBlockParent()
     {
         return ParentVox.Count(s => s?.Type == VoxelType.Block) == 1;
     }

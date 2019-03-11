@@ -23,7 +23,7 @@ public class RhinoImporter//based on Vicente's code
 /// <summary>
 /// Assembly pattern existing of blocks 
 /// </summary>
-public class Assembly
+public class Assembly //VS
 {
     public List<Instance> Instances { get; set; }
 
@@ -53,7 +53,6 @@ public class Assembly
         }
     }
 }
-
 
 public class Instance
 {

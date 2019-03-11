@@ -89,7 +89,7 @@ public class GenerationAlgorithm : IGenerationAlgorithm //Coded together with Ma
     /// <returns>Can the block be added or not</returns>
     private bool ConnectedPath(Block block, Grid3D grid)
     {
-        var pathFinding = grid.PathFinding;
+        var pathFinding = grid.PFinding;
         var index = block.BlockVoxels.Where(v => v.Type == VoxelType.Block).Select(v => v.Index);
         var prevVoxels = index.Select(v => grid.GetVoxelAt(v));
 

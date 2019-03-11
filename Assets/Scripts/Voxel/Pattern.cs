@@ -17,7 +17,6 @@ public abstract class Pattern
         InitialisePattern();
     }
 
-
     /// <summary>
     /// Initialise a pattern, setting the block voxels, the connection voxels and their normals in relation to index 0,0,0
     /// </summary>

@@ -106,7 +106,6 @@ public class Block
             new Vector3Int(-vec.y, vec.x, vec.z),
             new Vector3Int(-vec.x, -vec.y, vec.z),
             new Vector3Int(vec.y, -vec.x, vec.z)
-
         };
 
         vec = rotation_z[_rotation.z / 90 % 4];

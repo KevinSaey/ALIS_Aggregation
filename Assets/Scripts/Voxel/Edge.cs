@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Edge
+public class Edge//Vicente's code
 {
-    //Based on Vicente's code
+    
     public Vector3Int Index;
     public Axis Direction;
     public Vector3 Center;

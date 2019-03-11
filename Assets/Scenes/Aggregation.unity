@@ -800,7 +800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab61b36423410d44acd001c06adb22f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnableCapture: 1
+  EnableCapture: 0
 --- !u!4 &1742805107
 Transform:
   m_ObjectHideFlags: 0

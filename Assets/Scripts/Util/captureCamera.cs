@@ -9,25 +9,19 @@ public class captureCamera : MonoBehaviour // stolen from Vicente
     bool EnableCapture = false;
 
     string folder = @"D:\Unity\ALIS_Aggregation\ScreenCapture";
-
-
-
+    
     void Start()
     {
         Time.captureFramerate = 25;
     }
-
-
-
+    
     void Update()
     {
 
         if (EnableCapture)
             StartCoroutine(Capture());
     }
-
-
-
+    
     IEnumerator Capture()
     {
         yield return new WaitForSeconds(0.2f);
