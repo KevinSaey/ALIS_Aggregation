@@ -4,21 +4,38 @@ using UnityEngine;
 using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
+using System.IO;
 
 /// <summary>
 /// Import a assembly pattern generated in grasshopper
 /// </summary>
 public class RhinoImporter//based on Vicente's code
 {
-    string _fileName = @"D:\Unity\ALIS_Aggregation\RhinoExporter\export.xml";
+
+    string _path = @"D:\Unity\School\ALIS_Aggregation\RhinoExporter\Sample_1.xml";
     Grid3D _grid;
 
     public RhinoImporter(Grid3D grid)
     {
+        //var files = LoadFiles();
+        //Debug.Log(files);
         _grid = grid;
-        Assembly.Import(_fileName).Generate(_grid);
+        //List<RhinoSample> assemblies = new List<RhinoSample>();
+
+        /*for (int i = 0; i < files.Count; i++)
+        {
+            assemblies.Add(RhinoSample.Import(files[i]));
+        }*/
+        Assembly.Import(_path).Generate(_grid);
+    }
+
+    public List<string> LoadFiles()
+    {
+        return Directory.GetFiles(_path, "*.xml").ToList();
     }
 }
+
+
 
 /// <summary>
 /// Assembly pattern existing of blocks 
@@ -43,7 +60,7 @@ public class Assembly //VS
         {
             var rotation = instance.Pose.rotation.eulerAngles.ToVector3Int();
             Debug.Log("imported rotation " + rotation);
-            if(rotation.x == -90) rotation.x = 270;
+            if (rotation.x == -90) rotation.x = 270;
             if (rotation.y == -90) rotation.x = 270;
             if (rotation.z == -90) rotation.x = 270;
             Debug.Log("adjusted rotation " + rotation);

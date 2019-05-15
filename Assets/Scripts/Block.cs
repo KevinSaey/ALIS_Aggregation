@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using static UnityEngine.Mathf;
 
 /// <summary>
 /// Rotates and translates a pattern
@@ -58,10 +59,35 @@ public class Block
         foreach (var voxel in Pattern.Voxels)
         {
             var copyVox = voxel.ShallowClone();
-            copyVox.Index = RotateVector(copyVox.Index);
+            TryOrientIndex(copyVox.Index, Vector3Int.zero, Quaternion.Euler(_rotation), out var rotated);
+            
+                copyVox.Index = rotated;
+            
+
+            //copyVox.Index = RotateVector(copyVox.Index);
             copyVox.WalkableFaces?.ForEach(s => RotateVector(s));
             yield return copyVox;
         }
+    }
+
+    public bool TryOrientIndex(Vector3Int localIndex, Vector3Int anchor, Quaternion rotation, out Vector3Int worldIndex)
+    {
+        var rotated = rotation * localIndex;
+        worldIndex = anchor + ToInt(rotated);
+        return CheckBounds(worldIndex);
+    }
+
+    Vector3Int ToInt(Vector3 v) => new Vector3Int(RoundToInt(v.x), RoundToInt(v.y), RoundToInt(v.z));
+
+    bool CheckBounds(Vector3Int index)
+    {
+        if (index.x < 0) return false;
+        if (index.y < 0) return false;
+        if (index.z < 0) return false;
+        if (index.x >= _grid.Size.x) return false;
+        if (index.y >= _grid.Size.y) return false;
+        if (index.z >= _grid.Size.z) return false;
+        return true;
     }
 
     /// <summary>
@@ -73,9 +99,8 @@ public class Block
     {
         //reduce the rotations to 360 degrees (this limits the maximum size of the voxelgrid)
         vec.x = vec.x % 360;
-        vec.x = vec.x % 360;
-        vec.x = vec.x % 360;
-        vec.x = vec.x % 360;
+        vec.y = vec.y % 360;
+        vec.z = vec.z % 360;
 
         // x rotation
         Vector3Int[] rotation_x = new Vector3Int[]
@@ -93,7 +118,7 @@ public class Block
         {
             vec,
             new Vector3Int(vec.z, vec.y, -vec.x),
-            new Vector3Int(-vec.x, vec.y, -vec.z),
+            vec,//new Vector3Int(-vec.x, vec.y, -vec.z),
             new Vector3Int(-vec.z, vec.y, vec.x)
         };
 

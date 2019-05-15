@@ -220,7 +220,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.92156863, g: 0.85882354, b: 0.8392157, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -459,7 +459,7 @@ MonoBehaviour:
   _goTarget: {fileID: 1858465559}
   _matBlock: {fileID: 2100000, guid: 6c7d30222bd8a7c43bf27dd54fc4f824, type: 2}
   _matConnection: {fileID: 2100000, guid: ffdec7a1124a7c743aa18dba71329563, type: 2}
-  _size: {x: 50, y: 50, z: 50}
+  _size: {x: 60, y: 20, z: 60}
   _voxelSize: 1
   _minCon: 3
 --- !u!4 &928847647
